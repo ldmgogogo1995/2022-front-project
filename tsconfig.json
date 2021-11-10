@@ -5,9 +5,14 @@
         "strict": true,
         "sourceMap": true,
         "allowJs": true,
+        "baseUrl": ".",
+        "jsx": "react",
+        "paths": {
+            "@/*": ["./src/*"],
+          }
     },
     "include": [
-        "./src/index.ts"
+        "src/**/*"
     ],
     "exclude": [
         "node_module/*"
