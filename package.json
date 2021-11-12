@@ -14,10 +14,15 @@
     "css-loader": "^6.5.1",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.4.4",
+    "node": "^17.0.1",
+    "postcss-loader": "^6.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "recoil": "^0.5.2",
+    "sass": "^1.43.4",
+    "sass-loader": "^12.3.0",
     "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.2.5",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.4",
     "webpack": "^5.62.2",
@@ -33,5 +38,9 @@
   },
   "devDependencies": {
     "webpack-dev-server": "^4.4.0"
-  }
+  },
+  "browserslist": [
+    "last 1 version",
+    "> 1%"
+  ]
 }

@@ -1,6 +1,7 @@
 const { merge } = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpackBaseConfig = require('./webpack.base.conf')
 module.exports = merge(webpackBaseConfig, {
     plugins: [
@@ -12,6 +13,9 @@ module.exports = merge(webpackBaseConfig, {
             // 指定变量
             title: '毕业设计'
         }),
-        new CleanWebpackPlugin()
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].[contenthash:8].css'
+        })
     ]
 })

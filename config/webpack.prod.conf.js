@@ -14,7 +14,10 @@ const WebpackProdConfig = merge(webpackBaseConfig, {
             // 指定变量
             title: '毕业设计'
         }),
-        new CleanWebpackPlugin()
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].[contenthash:8].css'
+        })
     ]
 })
 module.exports = WebpackProdConfig
