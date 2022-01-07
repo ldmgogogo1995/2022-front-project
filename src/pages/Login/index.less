@@ -1,0 +1,35 @@
+@layout-body-background: #f0f2f5;
+@screen-md: 768px;
+@screen-md-min: @screen-md;
+.login-page-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  background: @layout-body-background;
+}
+@media (min-width: @screen-md-min) {
+  .login-page-container {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+  }
+  .login-banner {
+    height: 100vh;
+    width: 550px;
+  }
+  .login-content {
+    flex: 1;
+    position: relative;
+    padding-bottom: 40px;
+    .login-form{
+      width: 100%;
+    }
+    .login-footer {
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+  }
+}

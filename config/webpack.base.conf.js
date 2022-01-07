@@ -1,6 +1,11 @@
 const path = require('path')
 const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+
+const ArcoDsignPlugin = require('@arco-design/webpack-plugin')
+// 通用style-loader配置
 const commonStyleLoder = [
     // Creates `style` nodes from JS strings
     // 'style-loader',
@@ -11,21 +16,32 @@ const commonStyleLoder = [
         }
     },
     // Translates CSS into CommonJS
-    'css-loader',
-    'postcss-loader'
+    {
+        loader: 'css-loader',
+        // options: {
+        //     modules: {
+        //         localIdentName: "[path][name]__[local]--[hash:base64:5]"
+        //     },
+
+        // }
+    },
+    {
+        loader: 'postcss-loader'
+    }
 ]
-
 const baseConfig = {
-
     // 模式：默认开发模式
     mode: 'development',
     // 入口文件
-    entry: './src/global.tsx',
+    entry: {
+        index: './src/global.tsx',
+    },
     //出口文件
     output: {
         path: path.resolve(__dirname, '../dist'),
         filename: 'bundle[chunkhash:8].js'
     },
+    devtool: 'source-map',
     // 模块解析规则
     resolve: {
         alias: {
@@ -51,7 +67,6 @@ const baseConfig = {
             chunks: 'all'
         }
     },
-
     //模块配置规则
     module: {
         rules: [
@@ -88,9 +103,7 @@ const baseConfig = {
 
                         }
                     },
-                    {
-                        loader: 'ts-loader'
-                    },
+                    'ts-loader'
                 ],
                 exclude: '/node-modules/'
             },
@@ -109,6 +122,7 @@ const baseConfig = {
             },
             {
                 test: /\.css$/i,
+
                 use: commonStyleLoder
             },
             {
@@ -118,7 +132,15 @@ const baseConfig = {
                     // Compiles Sass to CSS
                     'sass-loader'
                 ]
-            }
+            },
+            {
+                test: /\.less$/i,
+                use: [
+                    ...commonStyleLoder,
+                    // Compiles Less to CSS
+                    'less-loader'
+                ]
+            },
         ]
     },
     devServer: {
@@ -131,8 +153,27 @@ const baseConfig = {
         port: 1226,
         //启动自动更新（禁用hot）
         liveReload: true,
-        open: true
+        open: true,
+        hot: true
     },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].[contenthash:8].css'
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: 'public',
+                    to: 'public'
+                }
+            ]
+        }),
+        new ArcoDsignPlugin()
+
+    ],
+    // 将src下不需要处理的文件直接辅助到输出目录中
+
     // 配置目标
     target: 'web',
 }
