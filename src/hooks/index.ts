@@ -6,3 +6,5 @@
  * @Description: 自定义hook出口
  */
 export { default as useEchars } from './useEchars';
+export { default as useLocale } from './useLocale';
+export { default as useStorage } from './useStorage';

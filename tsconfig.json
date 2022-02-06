@@ -3,12 +3,14 @@
         "module": "esnext",
         "moduleResolution": "node",
         "target": "esnext",
-        "strict": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": false,
         "sourceMap": true,
         "allowJs": true,
         "baseUrl": ".",
         "jsx": "react",
         "outDir": "./",
+        "resolveJsonModule": true,
         "paths": {
             "@/*": [
                 "./src/*"
