@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import './index.scss';
+import './index.less';
 import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { Layout, Menu, Breadcrumb, Button, Message } from '@arco-design/web-react';
 import { settingsAtom } from '@/globalAtoms/settingAtoms';
@@ -63,8 +63,12 @@ const BaseLayoutPage: React.FC = ({ children }) => {
   return (
     <div className="layout-basic">
       <Layout>
-        {showNavbar && <GlobalHeader />}
-        <Layout>
+        {showNavbar && (
+          <div className="layout-nav-bar">
+            <GlobalHeader />
+          </div>
+        )}
+        <Layout className="layout-content">
           {showMenu && (
             <Sider
               breakpoint="xl"

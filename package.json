@@ -43,6 +43,7 @@
     "build:prod": "webpack --config config/webpack.prod.conf.js"
   },
   "devDependencies": {
+    "@svgr/webpack": "^6.2.1",
     "webpack-dev-server": "^4.4.0"
   },
   "browserslist": [

@@ -1,0 +1,19 @@
+@nav-size-height: 60px;
+@layout-max-width: 1100px;
+.layout-basic {
+  height: 5 00px;
+  border: 1px solid var(--color-border);
+  background: var(--color-fill-2);
+  .layout-nav-bar {
+    position: fixed;
+    width: 100%;
+    min-width: @layout-max-width;
+    top: 0;
+    left: 0;
+    height: @nav-size-height;
+    z-index: 100;
+  }
+  .layout-content {
+    margin-top: 60px;
+  }
+}
