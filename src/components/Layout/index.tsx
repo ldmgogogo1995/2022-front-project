@@ -16,10 +16,14 @@ import GlobalFooter from './GlobalFooter';
 import { useRecoilValue } from 'recoil';
 import getUrlParams from '@/utils/getUrlParams';
 import qs from 'query-string';
+import { IconMenuFold, IconMenuUnfold } from '@arco-design/web-react/icon';
+import { routes, defaultRoute } from '@/routes';
+import { isArray } from '@/utils/is';
+import lazyload from '@/utils/lazyload';
 const { Content, Sider } = Layout;
 const { useCallback, useState, useMemo } = React;
 const navbarHeight = 60;
-const BaseLayoutPage: React.FC = ({ children }) => {
+const BaseLayoutPage: React.FC = () => {
   /*-------state--------*/
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
@@ -35,6 +39,30 @@ const BaseLayoutPage: React.FC = ({ children }) => {
   /*-------recoil------*/
   const settings = useRecoilValue(settingsAtom);
 
+  /*-------method------*/
+  const handleCollapse = useCallback(() => {
+    setCollapsed((collapsed) => !collapsed);
+  }, []);
+
+  /**
+   * 递归处理给路由加component
+   */
+  const getFlattenRoutes = () => {
+    const res = [];
+    function travel(_routes) {
+      debugger;
+      _routes.forEach((route) => {
+        if (route.key && !route.children) {
+          route.component = lazyload(() => import(`../../pages/${route.key}`));
+          res.push(route);
+        } else if (isArray(route.children) && route.children.length) {
+          travel(route.children);
+        }
+      });
+    }
+    travel(routes);
+    return res;
+  };
   /*---------memo---------*/
   const menuWidth = useMemo(() => (collapsed ? 48 : settings.menuWidth), [collapsed, settings]);
 
@@ -42,20 +70,19 @@ const BaseLayoutPage: React.FC = ({ children }) => {
     () => settings.navbar && urlParams.navbar !== false,
     [settings, urlParams]
   );
+
   const showNavbar = useMemo(
     () => settings.menu && urlParams.menu !== false,
     [settings, urlParams]
   );
+
   const showFooter = useMemo(
     () => settings.footer && urlParams.footer !== false,
     [settings, urlParams]
   );
 
-  /*-------method------*/
-  const handleCollapse = useCallback(() => {
-    setCollapsed((collapsed) => !collapsed);
-  }, []);
-
+  const flattenRoutes = useMemo(() => getFlattenRoutes(), []);
+  console.log(flattenRoutes,'flattenRoutes')
   /*-------style-------*/
   const paddingLeft = showMenu ? { paddingLeft: menuWidth } : {};
   const paddingTop = showNavbar ? { paddingTop: navbarHeight } : {};
@@ -71,6 +98,7 @@ const BaseLayoutPage: React.FC = ({ children }) => {
         <Layout className="layout-content">
           {showMenu && (
             <Sider
+              className="layout-sider"
               breakpoint="xl"
               style={paddingTop}
               onCollapse={setCollapsed}
@@ -80,6 +108,9 @@ const BaseLayoutPage: React.FC = ({ children }) => {
               trigger={null}
             >
               <Menu />
+              <div className="collapse-btn" onClick={handleCollapse}>
+                {collapsed ? <IconMenuUnfold /> : <IconMenuFold />}
+              </div>
             </Sider>
           )}
           <Layout style={paddingStyle}>

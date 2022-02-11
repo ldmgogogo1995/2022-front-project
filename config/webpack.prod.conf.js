@@ -16,7 +16,7 @@ const WebpackProdConfig = merge(webpackBaseConfig, {
             // 指定打包后的文件名称
             filename: 'index.html',
             // 用来指定，生成HTML的模板
-            template: './src/pages/document.ejs',
+            template: './public/document.ejs',
             // 指定变量
             title: '毕业设计：生产环境'
         }),
