@@ -12,7 +12,7 @@ const commonStyleLoder = [
   {
     loader: MiniCssExtractPlugin.loader,
     options: {
-      publicPath: '../',
+      publicPath: './',
     },
   },
   // Translates CSS into CommonJS
@@ -40,6 +40,7 @@ const baseConfig = {
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: 'bundle[chunkhash:8].js',
+    publicPath:'/'
   },
   devtool: 'source-map',
   // 模块解析规则
@@ -117,7 +118,6 @@ const baseConfig = {
       },
       {
         test: /\.css$/i,
-
         use: commonStyleLoder,
       },
       {
@@ -155,6 +155,18 @@ const baseConfig = {
     liveReload: true,
     open: true,
     hot: true,
+    historyApiFallback: true,
+    // 代理设置
+    proxy: {
+      '/api': {
+        target: 'http://localhost:1995',
+        pathRewrite: {
+          '^/api': '/api',
+        },
+        changeOrigin: true,
+        logLevel: 'debug',
+      },
+    },
   },
   plugins: [
     new CleanWebpackPlugin(),

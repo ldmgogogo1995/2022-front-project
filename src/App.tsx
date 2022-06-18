@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
 import Layout from '@/components/Layout';
 import { Button, Spin, ConfigProvider } from '@arco-design/web-react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import { useStorage } from './hooks';
 import zhCN from '@arco-design/web-react/es/locale/zh-CN';
 import enUS from '@arco-design/web-react/es/locale/en-US';
 import changeTheme from './utils/changeTheme';
 import { GlobalContext } from './context';
+import checkLogin from './utils/checkLogin';
 /*
  * @Author: ldm
  * @Date: 2021-11-13 17:14:18
@@ -17,7 +18,7 @@ import { GlobalContext } from './context';
  * @Description: 项目入口
  */
 export default function App(): React.ReactElement {
-  const [lang, setLang] = useStorage('ldm-lang', 'en-US');
+  const [lang, setLang] = useStorage('ldm-lang', 'zh-CN');
   const [theme, setTheme] = useStorage('ldm-theme', 'light');
 
   function getArcoLocale() {
@@ -30,6 +31,16 @@ export default function App(): React.ReactElement {
         return zhCN;
     }
   }
+
+  function fetchUserInfo() {}
+
+  useEffect(() => {
+    // if (checkLogin()) {
+    //   fetchUserInfo();
+    // } else if (window.location.pathname !== '/login') {
+    //   window.location.href = '/login';
+    // }
+  }, []);
 
   useEffect(() => {
     changeTheme(theme);
@@ -59,10 +70,10 @@ export default function App(): React.ReactElement {
       >
         <RecoilRoot>
           <GlobalContext.Provider value={contextValue}>
-            <Routes>
-              <Route path="/" element={<Layout />} />
-              <Route path="/login" element={<Login />} />
-            </Routes>
+            <Switch>
+              <Route path="/login" component={Login} />
+              <Route path="/" component={Layout} />
+            </Switch>
           </GlobalContext.Provider>
         </RecoilRoot>
       </ConfigProvider>
