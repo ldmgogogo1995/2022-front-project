@@ -1,3 +1,10 @@
+/*
+ * @Author: ldm
+ * @Date: 2021-11-13 17:14:18
+ * @LastEditors: ldm
+ * @LastEditTime: 2022-07-14 00:16:28
+ * @Description: 项目入口
+ */
 import React, { useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
 import Layout from '@/components/Layout';
@@ -10,13 +17,7 @@ import enUS from '@arco-design/web-react/es/locale/en-US';
 import changeTheme from './utils/changeTheme';
 import { GlobalContext } from './context';
 import checkLogin from './utils/checkLogin';
-/*
- * @Author: ldm
- * @Date: 2021-11-13 17:14:18
- * @LastEditors: ldm
- * @LastEditTime: 2021-12-25 01:17:22
- * @Description: 项目入口
- */
+
 export default function App(): React.ReactElement {
   const [lang, setLang] = useStorage('ldm-lang', 'zh-CN');
   const [theme, setTheme] = useStorage('ldm-theme', 'light');
@@ -32,14 +33,17 @@ export default function App(): React.ReactElement {
     }
   }
 
-  function fetchUserInfo() {}
+  function fetchUserInfo() {
+    console.log('res');
+  }
 
   useEffect(() => {
-    // if (checkLogin()) {
-    //   fetchUserInfo();
-    // } else if (window.location.pathname !== '/login') {
-    //   window.location.href = '/login';
-    // }
+    if (checkLogin()) {
+      fetchUserInfo();
+      console.log(123);
+    } else if (window.location.pathname !== '/login') {
+      window.location.href = '/login';
+    }
   }, []);
 
   useEffect(() => {
