@@ -2,7 +2,7 @@
  * @Author: ldm
  * @Date: 2021-11-13 17:14:18
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-14 00:16:28
+ * @LastEditTime: 2022-07-20 00:58:41
  * @Description: 项目入口
  */
 import React, { useEffect } from 'react';
@@ -33,14 +33,11 @@ export default function App(): React.ReactElement {
     }
   }
 
-  function fetchUserInfo() {
-    console.log('res');
-  }
+  function fetchUserInfo() {}
 
   useEffect(() => {
     if (checkLogin()) {
       fetchUserInfo();
-      console.log(123);
     } else if (window.location.pathname !== '/login') {
       window.location.href = '/login';
     }

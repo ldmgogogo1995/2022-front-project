@@ -4,14 +4,18 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-04-01 01:04:34
+ * @LastEditTime: 2022-07-20 00:53:30
  */
+import { userAtom } from '@/globalAtoms/userAtoms';
 import { useLocale } from '@/hooks';
 import { Card } from '@arco-design/web-react';
 import React from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import locale from './locale';
 import SearchForm from './SearchForm';
 const UserManagement: React.FC = () => {
+  const user = useRecoilValue(userAtom)
+  console.log(user,'user')
   const t = useLocale(locale);
   return (
     <Card

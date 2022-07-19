@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-02 14:20:02
  * @LastEditors: ldm
- * @LastEditTime: 2022-03-24 02:05:00
+ * @LastEditTime: 2022-07-20 00:59:12
  */
 
 import axios, { AxiosRequestConfig } from 'axios';
@@ -45,11 +45,9 @@ instance.interceptors.response.use(
     return Promise.resolve(respnose);
   },
   (error) => {
-    console.log(error,'>>>>>>>')
     const { respnose } = error;
     if (respnose) {
       // 请求已发送，有返回的情况
-      console.log(respnose,'ressss')
       const { status, message } = respnose;
       Message.error(message);
       switch (status) {

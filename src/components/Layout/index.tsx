@@ -2,7 +2,7 @@
  * @Author: ldm
  * @Date: 2021-11-20 03:22:49
  * @LastEditors: ldm
- * @LastEditTime: 2022-05-11 00:37:10
+ * @LastEditTime: 2022-07-20 00:48:04
  * @Description: 布局组件
  */
 
@@ -41,9 +41,7 @@ const { useCallback, useState, useMemo, useRef, useEffect } = React;
 const { SubMenu, Item: MenuItem } = Menu;
 const navbarHeight = 60;
 const BaseLayoutPage: React.FC = () => {
-  console.log('layout render');
   const locale = useLocale();
-  console.log(locale, 'locae');
   /*-------customHook-----*/
   const urlParams = getUrlParams();
   const location = useLocation();

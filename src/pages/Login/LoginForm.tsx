@@ -2,7 +2,7 @@
  * @Author: ldm
  * @Date: 2021-12-25 14:30:58
  * @LastEditors: ldm
- * @LastEditTime: 2022-03-24 02:07:45
+ * @LastEditTime: 2022-07-20 00:58:11
  * @Description: 登录表单
  */
 
@@ -16,9 +16,11 @@ import { C } from '@/constants/common';
 import { User, userAtom } from '@/globalAtoms/userAtoms';
 import { useRecoilState } from 'recoil';
 import { defaultRoute } from '@/routes';
+import { useHistory } from 'react-router-dom';
 
 const LoginForm: React.FC = () => {
   /*-----customhooks----*/
+  const history = useHistory();
   const { useForm } = Form;
   const [form] = useForm();
   const t = useLocale(locale);
@@ -26,6 +28,7 @@ const LoginForm: React.FC = () => {
   const [errorMessage, setErrorMessage] = React.useState<string>('');
   const [rememberPassword, setRememberPassword] = React.useState<boolean>(false);
   const [loginParams, setLoginParams, removeLoginParams] = useStorage('loginParams');
+  const [user, setUser] = useRecoilState(userAtom);
   /**
    * 登陆提交账号密码
    */
@@ -34,12 +37,13 @@ const LoginForm: React.FC = () => {
       login(value)
         .then((res) => {
           if (res.code === C.SUCCESS_CODE) {
+            setUser(res.data);
             afterLogin(value);
           } else {
-            Message.error('123');
+            Message.error(res.message);
           }
         })
-        .catch((err) => Message.error('456'));
+        .catch((err) => console.error(err));
     });
   }, []);
 
@@ -50,7 +54,7 @@ const LoginForm: React.FC = () => {
    * @author: ldm
    */
   const afterLogin = React.useCallback((params) => {
-    Message.success('登陆成功')
+    Message.success('登陆成功');
     // 记住密码
     if (rememberPassword) {
       setLoginParams(JSON.stringify(params));
@@ -60,7 +64,7 @@ const LoginForm: React.FC = () => {
     // 记录登录状态
     localStorage.setItem('userStatus', 'login');
     // 跳转首页
-    window.location.href = defaultRoute;
+    history.push(defaultRoute);
   }, []);
 
   // 读取 localStorage，设置初始值
