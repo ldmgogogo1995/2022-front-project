@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: ldm
+ * @Date: 2022-01-31 10:17:41
+ * @LastEditors: ldm
+ * @LastEditTime: 2022-07-27 01:46:50
+ */
 import { isSSR } from '@/utils/is';
 import { useEffect, useState } from 'react';
 
@@ -8,7 +16,10 @@ const getDefaultStorage = (key: string) => {
     return undefined;
   }
 };
-const useStorage = (key: string, defaultValue=''): [string, (val:string) => void, () => void] => {
+const useStorage = (
+  key: string,
+  defaultValue = ''
+): [string, (val: string) => void, () => void] => {
   const [storedValue, setStoredValue] = useState<string>(getDefaultStorage(key) || defaultValue);
 
   /**
@@ -27,7 +38,7 @@ const useStorage = (key: string, defaultValue=''): [string, (val:string) => void
    * 删除 storage value
    */
   const removeStoregeValue = () => {
-    localStorage.removeItem('key');
+    localStorage.removeItem(key);
   };
 
   useEffect(() => {

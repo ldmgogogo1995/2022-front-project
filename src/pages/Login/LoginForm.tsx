@@ -2,7 +2,7 @@
  * @Author: ldm
  * @Date: 2021-12-25 14:30:58
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-20 00:58:11
+ * @LastEditTime: 2022-07-27 01:49:21
  * @Description: 登录表单
  */
 
@@ -13,8 +13,6 @@ import { IconLock, IconUser } from '@arco-design/web-react/icon';
 import * as React from 'react';
 import { login } from './server';
 import { C } from '@/constants/common';
-import { User, userAtom } from '@/globalAtoms/userAtoms';
-import { useRecoilState } from 'recoil';
 import { defaultRoute } from '@/routes';
 import { useHistory } from 'react-router-dom';
 
@@ -28,7 +26,8 @@ const LoginForm: React.FC = () => {
   const [errorMessage, setErrorMessage] = React.useState<string>('');
   const [rememberPassword, setRememberPassword] = React.useState<boolean>(false);
   const [loginParams, setLoginParams, removeLoginParams] = useStorage('loginParams');
-  const [user, setUser] = useRecoilState(userAtom);
+  const [, setUserInfo, removeUserInfo] = useStorage('USER_INFO');
+  const [, setUserStatus, removeUserStatus] = useStorage('userStatus');
   /**
    * 登陆提交账号密码
    */
@@ -37,13 +36,14 @@ const LoginForm: React.FC = () => {
       login(value)
         .then((res) => {
           if (res.code === C.SUCCESS_CODE) {
-            setUser(res.data);
+            const userInfoJson = JSON.stringify(res.data);
+            setUserInfo(userInfoJson);
             afterLogin(value);
           } else {
             Message.error(res.message);
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => Message.error('系统错误'));
     });
   }, []);
 
@@ -62,7 +62,7 @@ const LoginForm: React.FC = () => {
       removeLoginParams();
     }
     // 记录登录状态
-    localStorage.setItem('userStatus', 'login');
+    setUserStatus('login');
     // 跳转首页
     history.push(defaultRoute);
   }, []);
@@ -70,6 +70,8 @@ const LoginForm: React.FC = () => {
   // 读取 localStorage，设置初始值
   React.useEffect(() => {
     const rememberPassword = !!loginParams;
+    removeUserInfo();
+    removeUserStatus();
     setRememberPassword(rememberPassword);
     if (rememberPassword) {
       const parseParams = JSON.parse(loginParams);

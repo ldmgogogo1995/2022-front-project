@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-04-01 00:04:41
  * @LastEditors: ldm
- * @LastEditTime: 2022-05-29 14:35:37
+ * @LastEditTime: 2022-07-28 20:20:17
  */
 import { GlobalContext } from '@/context';
 import { useLocale } from '@/hooks';
@@ -13,7 +13,11 @@ import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import React, { useContext } from 'react';
 import styles from './index.module.less';
 import locale from './locale';
-type Props = {};
+import { QueryUserListParams } from './server';
+type Props = {
+  setFormParams: React.Dispatch<React.SetStateAction<Partial<QueryUserListParams>>>;
+  
+};
 const { useForm } = Form;
 const { Row, Col } = Grid;
 

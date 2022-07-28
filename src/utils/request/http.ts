@@ -4,14 +4,14 @@
  * @Autor: ldm
  * @Date: 2022-02-02 14:20:02
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-20 00:59:12
+ * @LastEditTime: 2022-07-27 01:41:55
  */
 
 import axios, { AxiosRequestConfig } from 'axios';
 import Qs from 'query-string';
 import { Message } from '@arco-design/web-react';
 const baseURL = '/api';
-import { REQUEST } from '@/constants/common';
+import { codeMessage, REQUEST } from '@/constants/common';
 const instance = axios.create({
   baseURL,
   headers: {
@@ -27,10 +27,14 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(
   (config) => {
-    console.log(config, 'request');
-    // 携带token
-    const token = localStorage.getItem('token');
+    // 携带token const userInfo = JSON.parse(localStorage.getItem('USER_INFO')))
+    let token = '';
+    if (localStorage.getItem('USER_INFO')) {
+      const userInfo = JSON.parse(localStorage.getItem('USER_INFO'));
+      token = 'Bearer ' + userInfo.token;
+    }
     token && (config.headers.Authorization = token);
+    console.log(config, 'config');
     return config;
   },
   (err) => Promise.reject(err)
@@ -45,13 +49,16 @@ instance.interceptors.response.use(
     return Promise.resolve(respnose);
   },
   (error) => {
-    const { respnose } = error;
-    if (respnose) {
+    const { response } = error;
+    if (response) {
       // 请求已发送，有返回的情况
-      const { status, message } = respnose;
-      Message.error(message);
+      const { status } = response;
+      Message.error(codeMessage[status]);
       switch (status) {
         case 401:
+          // 删除token
+          localStorage.removeItem('USER_INFO');
+          window.location.href = '/login';
           break;
       }
       return Promise.reject(error.respnose);
@@ -72,7 +79,7 @@ export default {
    * @param {String} url [请求的url地址]
    * @param {Object} params [请求时携带的参数]
    */
-  get(url: string, params: object) {
+  get(url: string, params?: object) {
     return new Promise((resolve, reject) => {
       instance
         .get(url, {
@@ -92,7 +99,7 @@ export default {
    * @param {String} url [请求的url地址]
    * @param {Object} params [请求时携带的参数]
    */
-  post(url: string = '', params: object) {
+  post(url: string = '', params?: object) {
     return new Promise((resolve, reject) => {
       instance
         .post(url, params)
@@ -109,7 +116,7 @@ export default {
    * @param {String} url [请求的url地址]
    * @param {Object} params [请求时携带的参数]
    */
-  qspost(url: string, params: object) {
+  qspost(url: string, params?: object) {
     return new Promise((resolve, reject) => {
       instance
         .post(url, Qs.stringify(params))
@@ -127,7 +134,7 @@ export default {
    * @param {String} url [请求的url地址]
    * @param {Object} params [请求时携带的参数]
    */
-  put(url: string, params: any) {
+  put(url: string, params?: any) {
     return new Promise((resolve, reject) => {
       instance
         .put(url, params)
@@ -145,7 +152,7 @@ export default {
    * @param {String} url [请求的url地址]
    * @param {Object} params [请求时携带的参数]
    */
-  deletefn(url: string, params: AxiosRequestConfig<any>) {
+  deletefn(url: string, params?: AxiosRequestConfig<any>) {
     return new Promise((resolve, reject) => {
       instance
         .delete(url, params)

@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-03-20 00:55:21
  * @LastEditors: ldm
- * @LastEditTime: 2022-04-01 01:12:24
+ * @LastEditTime: 2022-07-29 02:01:48
  */
 const i18n = {
   'en-US': {},
@@ -20,6 +20,13 @@ const i18n = {
     'searchForm.form.reset': '重置',
     'searchForm.createTime': '创建时间',
     'searchForm.createTime.placeholder': '请选择创建时间',
+    'action.button.create': '新建',
+    'user.nickname': '用户昵称',
+    'user.account': '用户账号',
+    'user.createDate': '创建时间',
+    'user.No': '序号',
+    'user.status': '用户状态',
+    'user.roles': '关联角色',
   },
 };
 

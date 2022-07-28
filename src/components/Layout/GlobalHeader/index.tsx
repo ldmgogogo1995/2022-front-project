@@ -4,16 +4,20 @@ import * as React from 'react';
  * @Author: ldm
  * @Date: 2021-11-22 16:06:07
  * @LastEditors: ldm
- * @LastEditTime: 2021-11-22 17:41:03
+ * @LastEditTime: 2022-07-21 01:10:58
  * @Description: 公共头部
  */
-import { Layout, Menu, Breadcrumb, Button, Message } from '@arco-design/web-react';
+import { Layout, Menu, Breadcrumb, Button, Avatar, Dropdown } from '@arco-design/web-react';
 import './index.less';
 import Logo from '@/assets/logo.svg';
+import { useRecoilValue } from 'recoil';
+import { userSelector } from '@/globalAtoms/userAtoms';
 const GlobalHeader: React.FC = () => {
-  // return <Header className="global-header">
-  //     公共头部
-  // </Header>
+  /*----customHook----*/
+  const { user } = useRecoilValue(userSelector);
+  /*----memo----*/
+  const droplist = React.useMemo(() => [], []);
+  console.log(user, 'user');
   return (
     <div className="global-header-container">
       <div className="left-content">
@@ -22,7 +26,21 @@ const GlobalHeader: React.FC = () => {
           <div className="name-text">DM EMG</div>
         </div>
       </div>
-      <div className="right-content"></div>
+      <div className="right-content">
+        <ul className="right-content-tags">
+          <li>
+            <Dropdown position="br">
+              <Avatar size={32} style={{ cursor: 'pointer' }}>
+                <img
+                  title={user.nickname}
+                  alt="avatar"
+                  src="../../../../public/images/WechatIMG2.jpeg"
+                />
+              </Avatar>
+            </Dropdown>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };

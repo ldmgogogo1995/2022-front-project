@@ -40,7 +40,7 @@ const baseConfig = {
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: 'bundle[chunkhash:8].js',
-    publicPath:'/'
+    publicPath: '/',
   },
   devtool: 'source-map',
   // 模块解析规则
@@ -170,9 +170,12 @@ const baseConfig = {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new ArcoDsignPlugin(),
     new MiniCssExtractPlugin({
       filename: 'css/[name].[contenthash:8].css',
+      ignoreOrder: true,
     }),
+
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -181,7 +184,6 @@ const baseConfig = {
         },
       ],
     }),
-    new ArcoDsignPlugin(),
   ],
   // 将src下不需要处理的文件直接辅助到输出目录中
 

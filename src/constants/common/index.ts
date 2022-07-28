@@ -2,22 +2,14 @@
  * @Author: ldm
  * @Date: 2021-11-30 01:35:35
  * @LastEditors: ldm
- * @LastEditTime: 2022-03-23 00:57:39
+ * @LastEditTime: 2022-07-28 01:29:09
  * @Description: 公共常量存放处
  */
 
 // 版权开头格式标注
 export const COPY_RIGHT: string = ' @CopyRight';
 
-/*
- * @Description: 常量存放出
- * @Version: 1.0
- * @Autor: ldm
- * @Date: 2022-02-23 00:53:03
- * @LastEditors: ldm
- * @LastEditTime: 2022-03-01 22:05:41
- */
-
+//网络超时毫秒数
 export const REQUEST = {
   TIMEOUT: 8000,
 };

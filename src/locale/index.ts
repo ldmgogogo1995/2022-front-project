@@ -11,5 +11,9 @@ export default {
     'menu.authority.roleManagement': '角色管理',
     'menu.authority.postManagement': '岗位管理',
     'table.sequence': '序号',
+    'table.actions': '操作',
+    'actions.create': '新建',
+    'actions.edit': '编辑',
+    'actions.delete': '删除',
   },
 };
