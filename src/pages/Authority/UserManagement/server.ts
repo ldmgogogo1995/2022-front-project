@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-07-26 22:14:33
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-29 02:19:34
+ * @LastEditTime: 2022-07-31 02:56:40
  */
 import { InitPageParmas } from '@/hooks/usePageParams';
 import request from '@/utils/request/http';
@@ -13,7 +13,8 @@ export interface QueryUserListParams extends InitPageParmas {
   account: string;
   nickname: string;
   status: string;
-  createDate: string;
+  startCreateDate: number;
+  endCreateDate: number;
 }
 
 export const fetchUserList = (params: Partial<QueryUserListParams>): Promise<any> =>

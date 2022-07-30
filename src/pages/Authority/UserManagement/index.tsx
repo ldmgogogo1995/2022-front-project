@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-29 02:17:14
+ * @LastEditTime: 2022-07-31 02:51:44
  */
 import { userSelector } from '@/globalAtoms/userAtoms';
 import { useLocale } from '@/hooks';
@@ -29,6 +29,7 @@ import { C } from '@/constants/common';
 import CustomPagination from '@/components/CustomPagination';
 import usePageParams, { InitPageParmas } from '@/hooks/usePageParams';
 import CustomButton from '@/components/CustomButton';
+
 
 const UserManagement: React.FC = () => {
   const user = useRecoilValue(userSelector);
@@ -89,33 +90,42 @@ const UserManagement: React.FC = () => {
    * @return {*}
    * @author: ldm
    */
-  const getUserList = useCallback(async (pageParams) => {
-    setLoading(true);
-    try {
-      const params = {
-        ...pageParams,
-      };
-      const res = await fetchUserList(params).finally(() => setLoading(false));
-      if (res.code === C.SUCCESS_CODE) {
-        setData(res.data ?? []);
-      } else {
-        Message.error(res.message);
+  const getUserList = useCallback(
+    async (pageParams) => {
+      setLoading(true);
+      try {
+        const params = {
+          ...pageParams,
+          ...formParams,
+        };
+        const res = await fetchUserList(params).finally(() => setLoading(false));
+        if (res.code === C.SUCCESS_CODE) {
+          setData(res.data ?? []);
+        } else {
+          Message.error(res.message);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+    },
+    [formParams]
+  );
 
   /**
    * @description:刷新列表数据
    * @return {*}
    * @author: ldm
    */
-  const doSerach = useCallback((pageParams: InitPageParmas) => {
-    getUserList(pageParams);
-  }, []);
+  const doSearch = useCallback(
+    (pageParams: InitPageParmas) => {
+      getUserList(pageParams);
+    },
+    [formParams]
+  );
   /*--customHook--*/
-  const [pageParams, setPageParams] = usePageParams({ current: 1, pageSize: 20 }, doSerach);
+  const [pageParams, setPageParams] = usePageParams({ current: 1, pageSize: 20 }, doSearch, [
+    formParams,
+  ]);
 
   return (
     <Card
