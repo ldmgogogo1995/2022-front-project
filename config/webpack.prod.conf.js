@@ -2,7 +2,7 @@
  * @Author: ldm
  * @Date: 2021-11-10 02:44:22
  * @LastEditors: ldm
- * @LastEditTime: 2021-11-20 03:53:17
+ * @LastEditTime: 2022-08-02 00:18:37
  * @Description: 生产环境配置
  */
 const { merge } = require('webpack-merge')
@@ -18,7 +18,7 @@ const WebpackProdConfig = merge(webpackBaseConfig, {
             // 用来指定，生成HTML的模板
             template: './public/document.ejs',
             // 指定变量
-            title: '毕业设计：生产环境'
+            title: '生产环境'
         }),
 
     ]

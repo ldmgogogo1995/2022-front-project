@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-03-19 20:56:55
  * @LastEditors: ldm
- * @LastEditTime: 2022-03-21 19:59:20
+ * @LastEditTime: 2022-08-02 01:59:51
  */
 
 import React, { Component } from 'react';
@@ -24,11 +24,11 @@ export default class ErrorBoundary extends Component<IProps, IState> {
     return { hasError: true };
   }
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-    console.error(errorInfo);
+    console.error(error);
   }
   render() {
     if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
+      return <h1>Something went wrong...</h1>;
     }
     return this.props.children;
   }

@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: ldm
+ * @Date: 2022-01-31 09:50:13
+ * @LastEditors: ldm
+ * @LastEditTime: 2022-08-04 00:43:32
+ */
 //基础国际化配置，目前国际化只配置中文映射英文
 export default {
   'en-US': { 'menu.welcome': 'Welcome' },
@@ -15,5 +23,6 @@ export default {
     'actions.create': '新建',
     'actions.edit': '编辑',
     'actions.delete': '删除',
+    'actions.success': '操作成功！',
   },
 };

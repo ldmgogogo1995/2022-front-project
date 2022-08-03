@@ -4,22 +4,20 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-31 02:51:44
+ * @LastEditTime: 2022-08-04 01:04:21
  */
-import { userSelector } from '@/globalAtoms/userAtoms';
-import { useLocale } from '@/hooks';
+import { useLocale, useUpdateEffect } from '@/hooks';
 import {
   Card,
   Button,
   Space,
   Table,
-  Pagination,
   TableColumnProps,
   Message,
   Divider,
+  Spin,
 } from '@arco-design/web-react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import React, { Suspense, useCallback, useMemo, useState } from 'react';
 import locale from './locale';
 import SearchForm from './SearchForm';
 import styles from './index.module.less';
@@ -29,10 +27,11 @@ import { C } from '@/constants/common';
 import CustomPagination from '@/components/CustomPagination';
 import usePageParams, { InitPageParmas } from '@/hooks/usePageParams';
 import CustomButton from '@/components/CustomButton';
-
+import CreateModal from './CreateModal';
+import { useRecoilState } from 'recoil';
+import { visibleAtom } from './model';
 
 const UserManagement: React.FC = () => {
-  const user = useRecoilValue(userSelector);
   const t = useLocale(locale);
   const c = useLocale();
   const columns: TableColumnProps[] = useMemo(
@@ -79,11 +78,20 @@ const UserManagement: React.FC = () => {
     [t]
   );
 
+  /*---recoil---*/
+  const [visible, setVisible] = useRecoilState<boolean>(visibleAtom);
   /*---state---*/
   const [data, setData] = useState([]); // 用户数据
   const [loading, setLoading] = useState<boolean>(false); // loading状态
   const [formParams, setFormParams] = useState<Partial<QueryUserListParams>>({});
 
+  /*---effetc---*/
+  useUpdateEffect(() => {
+    //关闭弹窗时刷新列表页
+    if (!visible) {
+      doSearch(pageParams);
+    }
+  }, [visible]);
   /*---method---*/
   /**
    * @description:获取用户列表
@@ -122,6 +130,15 @@ const UserManagement: React.FC = () => {
     },
     [formParams]
   );
+
+  /**
+   * @description:点击新建按钮
+   * @return {*}
+   * @author: ldm
+   */
+  const handleCreateUser = useCallback(() => {
+    setVisible(true);
+  }, []);
   /*--customHook--*/
   const [pageParams, setPageParams] = usePageParams({ current: 1, pageSize: 20 }, doSearch, [
     formParams,
@@ -135,7 +152,7 @@ const UserManagement: React.FC = () => {
       <SearchForm setFormParams={setFormParams} />
       <div className={styles['button-group']}>
         <Space>
-          <Button type="primary" icon={<IconPlus />}>
+          <Button type="primary" onClick={handleCreateUser} icon={<IconPlus />}>
             {t['action.button.create']}
           </Button>
         </Space>
@@ -157,6 +174,9 @@ const UserManagement: React.FC = () => {
           setPageParams({ current, pageSize });
         }}
       />
+      <Suspense fallback={<Spin loading={true} />}>
+        <CreateModal />
+      </Suspense>
     </Card>
   );
 };

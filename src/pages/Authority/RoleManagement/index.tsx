@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-03-21 22:23:57
  * @LastEditors: ldm
- * @LastEditTime: 2022-03-24 01:11:52
+ * @LastEditTime: 2022-08-01 02:34:46
  */
 
 import { User, userAtom } from '@/globalAtoms/userAtoms';
@@ -13,7 +13,6 @@ import { useRecoilValue } from 'recoil';
 
 const RoleManagement: React.FC = () => {
   const user = useRecoilValue<User>(userAtom);
-  console.log(user, 'user');
   return <div>RoleManagement</div>;
 };
 export default RoleManagement;

@@ -42,7 +42,7 @@ const baseConfig = {
     filename: 'bundle[chunkhash:8].js',
     publicPath: '/',
   },
-  devtool: 'source-map',
+  // devtool: 'source-map',
   // 模块解析规则
   resolve: {
     alias: {

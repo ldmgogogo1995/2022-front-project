@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-02 14:20:02
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-27 01:41:55
+ * @LastEditTime: 2022-08-02 00:19:52
  */
 
 import axios, { AxiosRequestConfig } from 'axios';
@@ -34,7 +34,6 @@ instance.interceptors.request.use(
       token = 'Bearer ' + userInfo.token;
     }
     token && (config.headers.Authorization = token);
-    console.log(config, 'config');
     return config;
   },
   (err) => Promise.reject(err)

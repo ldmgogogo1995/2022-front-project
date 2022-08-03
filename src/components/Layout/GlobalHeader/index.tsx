@@ -4,7 +4,7 @@ import * as React from 'react';
  * @Author: ldm
  * @Date: 2021-11-22 16:06:07
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-21 01:10:58
+ * @LastEditTime: 2022-08-01 02:34:42
  * @Description: 公共头部
  */
 import { Layout, Menu, Breadcrumb, Button, Avatar, Dropdown } from '@arco-design/web-react';
@@ -17,7 +17,6 @@ const GlobalHeader: React.FC = () => {
   const { user } = useRecoilValue(userSelector);
   /*----memo----*/
   const droplist = React.useMemo(() => [], []);
-  console.log(user, 'user');
   return (
     <div className="global-header-container">
       <div className="left-content">

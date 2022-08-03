@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-04-01 00:04:41
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-31 03:01:47
+ * @LastEditTime: 2022-07-31 03:07:10
  */
 import { GlobalContext } from '@/context';
 import { useLocale } from '@/hooks';
@@ -34,10 +34,10 @@ const SearchForm: React.FC<Props> = ({ setFormParams }) => {
    * @author: ldm
    */
   const handleSearch = useCallback(() => {
-    const formParams = form.getFieldsValue();
-    if (formParams?.createDate?.length) {
-      formParams.startCreateDate = D(formParams.createDate.at(0)).startOf('day').valueOf();
-      formParams.endCreateDate = D(formParams.createDate.at(1)).startOf('day').valueOf();
+    const { createDate, ...formParams } = form.getFieldsValue();
+    if (createDate?.length) {
+      formParams.startCreateDate = D(createDate.at(0)).startOf('day').valueOf();
+      formParams.endCreateDate = D(createDate.at(1)).startOf('day').valueOf();
     }
     setFormParams(formParams);
   }, [form]);

@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-07-26 22:14:33
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-31 02:56:40
+ * @LastEditTime: 2022-08-04 00:34:39
  */
 import { InitPageParmas } from '@/hooks/usePageParams';
 import request from '@/utils/request/http';
@@ -17,5 +17,42 @@ export interface QueryUserListParams extends InitPageParmas {
   endCreateDate: number;
 }
 
+export interface CreateUserParams {}
+
+export interface EditUserParams extends CreateUserParams {
+  id: string;
+}
+
+/**
+ * @description: 获取用户列表
+ * @param {Partial} params
+ * @return {*}
+ * @author: ldm
+ */
+
 export const fetchUserList = (params: Partial<QueryUserListParams>): Promise<any> =>
   request.get('/user/list', { ...params });
+
+/**
+ * @description: 获取用户详情
+ * @return {*}
+ * @author: ldm
+ */
+
+export const fetchUserDetail = (id: string): Promise<any> => request.get('/user/detail', { id });
+
+/**
+ * @description:编辑用户
+ * @return {*}
+ * @author: ldm
+ */
+export const editUser = (data: EditUserParams): Promise<any> =>
+  request.put('/user/edit', { ...data });
+
+/**
+ * @description:新建用户
+ * @return {*}
+ * @author: ldm
+ */
+export const createUser = (data: CreateUserParams): Promise<any> =>
+  request.put('/user/create', { ...data });

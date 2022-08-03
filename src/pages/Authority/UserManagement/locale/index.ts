@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-03-20 00:55:21
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-29 02:01:48
+ * @LastEditTime: 2022-08-04 01:02:38
  */
 const i18n = {
   'en-US': {},
@@ -27,6 +27,30 @@ const i18n = {
     'user.No': '序号',
     'user.status': '用户状态',
     'user.roles': '关联角色',
+    'user.createTitle': '新增用户',
+    'user.editTitle': '编辑用户',
+    'user.deleteWarn': '是否确定要删除用户？',
+    'user.modal.editTitle': '编辑用户',
+    'user.modal.createTitle': '新建用户',
+    'user.modal.nickname': '用户名称',
+    'user.modal.nicknamePlaceholder': '请输入用户名称',
+    'user.modal.account': '用户账号',
+    'user.modal.accountPlaceholder': '请输入用户账号',
+    'user.modal.passwrod': '用户密码',
+    'user.modal.passwrodPlaceholder': '请输入用户密码',
+    'user.modal.age': '年龄',
+    'user.modal.agePlaceholder': '请输入年龄',
+    'user.modal.sex': '性别',
+    'user.modal.email': '邮箱',
+    'user.modal.emailPlaceholder': '请输入邮箱',
+    'user.modal.rightEmail': '请输入正确的邮箱',
+    'user.modal.phone': '电话号码',
+    'user.modal.phonePlaceholder': '请输入电话号码',
+    'user.modal.rightPhone': '请输入正确的电话号码',
+    'user.modal.bindRoles': '角色绑定',
+    'user.modal.bindRolesPlease': '请绑定角色',
+    'user.modal.man': '男',
+    'user.modal.woman': '女',
   },
 };
 
