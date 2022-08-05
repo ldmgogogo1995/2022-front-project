@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-07-26 22:14:33
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-04 00:34:39
+ * @LastEditTime: 2022-08-05 20:00:58
  */
 import { InitPageParmas } from '@/hooks/usePageParams';
 import request from '@/utils/request/http';
@@ -55,4 +55,11 @@ export const editUser = (data: EditUserParams): Promise<any> =>
  * @author: ldm
  */
 export const createUser = (data: CreateUserParams): Promise<any> =>
-  request.put('/user/create', { ...data });
+  request.qsPost('/user/create', { ...data });
+
+/**
+ * @description: 获取角色列表
+ * @return {*}
+ * @author: ldm
+ */
+export const fetchRoleList = (): Promise<any> => request.get('/role/list');

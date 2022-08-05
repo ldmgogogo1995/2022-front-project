@@ -13,4 +13,4 @@ export type LoginParams = {
   password: string;
 };
 export const login = (data: LoginParams): Promise<any> =>
-  request.qspost('/common/login', { ...data });
+  request.qsPost('/common/login', { ...data });

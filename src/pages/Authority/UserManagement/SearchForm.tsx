@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-04-01 00:04:41
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-31 03:07:10
+ * @LastEditTime: 2022-08-05 19:00:21
  */
 import { GlobalContext } from '@/context';
 import { useLocale } from '@/hooks';
@@ -20,6 +20,7 @@ type Props = {
 };
 const { useForm } = Form;
 const { Row, Col } = Grid;
+const { Option } = Select;
 
 const SearchForm: React.FC<Props> = ({ setFormParams }) => {
   const { lang } = useContext(GlobalContext);
@@ -73,12 +74,10 @@ const SearchForm: React.FC<Props> = ({ setFormParams }) => {
           </Col>
           <Col span={colSpan}>
             <Form.Item label={t['searchForm.status']} field="status">
-              <Select
-                placeholder={t['searchForm.status.placeholder']}
-                options={[]}
-                mode="multiple"
-                allowClear
-              />
+              <Select placeholder={t['searchForm.status.placeholder']} allowClear>
+                <Option value={0}>{t['searchForm.forbidden']}</Option>
+                <Option value={1}>{t['searchForm.use']}</Option>
+              </Select>
             </Form.Item>
           </Col>
           <Col span={colSpan}>
@@ -87,6 +86,14 @@ const SearchForm: React.FC<Props> = ({ setFormParams }) => {
                 placeholder={t['searchForm.createDate.placeholder']}
                 allowClear
               />
+            </Form.Item>
+          </Col>
+          <Col span={colSpan}>
+            <Form.Item label={t['searchForm.sex']} field="sex">
+              <Select placeholder={t['searchForm.sex.placeholder']} allowClear>
+                <Option value="man">{t['user.modal.man']}</Option>
+                <Option value="woman">{t['user.modal.woman']}</Option>
+              </Select>
             </Form.Item>
           </Col>
         </Row>

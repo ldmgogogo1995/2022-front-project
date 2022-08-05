@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-02 14:20:02
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-02 00:19:52
+ * @LastEditTime: 2022-08-05 19:52:37
  */
 
 import axios, { AxiosRequestConfig } from 'axios';
@@ -82,7 +82,7 @@ export default {
     return new Promise((resolve, reject) => {
       instance
         .get(url, {
-          params: params,
+          params,
         })
         .then((res) => {
           resolve(res.data);
@@ -115,7 +115,7 @@ export default {
    * @param {String} url [请求的url地址]
    * @param {Object} params [请求时携带的参数]
    */
-  qspost(url: string, params?: object) {
+  qsPost(url: string, params?: object) {
     return new Promise((resolve, reject) => {
       instance
         .post(url, Qs.stringify(params))

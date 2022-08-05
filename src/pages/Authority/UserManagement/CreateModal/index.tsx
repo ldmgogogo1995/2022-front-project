@@ -4,14 +4,14 @@
  * @Autor: ldm
  * @Date: 2022-07-31 19:25:19
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-04 01:03:31
+ * @LastEditTime: 2022-08-05 20:04:58
  */
 
 import locale from '../locale';
 import { Form, Input, InputNumber, Message, Modal, Radio, Select } from '@arco-design/web-react';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { userIdAtom, userInfoQuery, visibleAtom } from '../model';
+import { roleListQuery, userIdAtom, userInfoQuery, visibleAtom } from '../model';
 import { useLocale } from '@/hooks';
 import { createUser, editUser } from '../server';
 import { C } from '@/constants/common';
@@ -26,13 +26,25 @@ const CreateModal: React.FC<IProps> = () => {
   /*--recoil--*/
   const userId = useRecoilValue(userIdAtom); //用户id
   const userInfo = useRecoilValue(userInfoQuery(userId)); // 用户信息
+  const roleList = useRecoilValue(roleListQuery);
   const [visible, setVisible] = useRecoilState(visibleAtom);
-
   /*--memo--*/
   const title = useMemo(
     () => (userId ? t['user.modal.editTitle'] : t['user.modal.createTitle']),
     [t, userId]
   );
+  const roleOptions = useMemo(
+    () =>
+      roleList.map((role) => ({
+        label: role.name,
+        value: role.id,
+      })),
+    [roleList]
+  );
+  /*--state--*/
+
+  const [loading, setLoading] = useState<boolean>(false);
+
   /*--method--*/
   /**
    * @description:点击取消按钮
@@ -53,10 +65,15 @@ const CreateModal: React.FC<IProps> = () => {
     form.validate().then(async (values) => {
       try {
         let res;
+        setLoading(true);
         if (values.id) {
-          res = await editUser(values);
+          res = await editUser(values).finally(() => {
+            setLoading(false);
+          });
         } else {
-          res = await createUser(values);
+          res = await createUser(values).finally(() => {
+            setLoading(false);
+          });
         }
         if (res?.code === C.SUCCESS_CODE) {
           Message.success(c['actions.success']);
@@ -85,11 +102,11 @@ const CreateModal: React.FC<IProps> = () => {
           <Input placeholder={t['user.modal.accountPlaceholder']} max={50} />
         </Form.Item>
         <Form.Item
-          label={t['user.modal.passwrod']}
-          field="passwrod"
-          rules={[{ required: true, message: t['user.modal.passwrodPlaceholder'] }]}
+          label={t['user.modal.password']}
+          field="password"
+          rules={[{ required: true, message: t['user.modal.passwordPlaceholder'] }]}
         >
-          <Input placeholder={t['user.modal.passwrodPlaceholder']} max={50} />
+          <Input placeholder={t['user.modal.passwordPlaceholder']} max={50} />
         </Form.Item>
         <Form.Item
           label={t['user.modal.sex']}
@@ -131,7 +148,12 @@ const CreateModal: React.FC<IProps> = () => {
           field="roles"
           rules={[{ required: true, message: t['user.modal.bindRolesPlease'] }]}
         >
-          <Select placeholder={t['user.modal.bindRolesPlease']} allowClear></Select>
+          <Select
+            placeholder={t['user.modal.bindRolesPlease']}
+            mode="multiple"
+            allowClear
+            options={roleOptions}
+          />
         </Form.Item>
       </Form>
     </Modal>

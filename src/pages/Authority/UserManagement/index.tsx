@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-04 01:04:21
+ * @LastEditTime: 2022-08-05 00:16:49
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -84,6 +84,7 @@ const UserManagement: React.FC = () => {
   const [data, setData] = useState([]); // 用户数据
   const [loading, setLoading] = useState<boolean>(false); // loading状态
   const [formParams, setFormParams] = useState<Partial<QueryUserListParams>>({});
+  const [total, setTotal] = useState<number>(0);
 
   /*---effetc---*/
   useUpdateEffect(() => {
@@ -109,6 +110,7 @@ const UserManagement: React.FC = () => {
         const res = await fetchUserList(params).finally(() => setLoading(false));
         if (res.code === C.SUCCESS_CODE) {
           setData(res.data ?? []);
+          setTotal(res.total ?? 0);
         } else {
           Message.error(res.message);
         }
@@ -164,7 +166,7 @@ const UserManagement: React.FC = () => {
         pageSize={pageParams.pageSize}
         current={pageParams.current}
         showTotal
-        total={200}
+        total={total}
         showJumper
         sizeCanChange
         onChange={(current, pageSize) => {

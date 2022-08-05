@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-03-20 00:55:21
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-04 01:02:38
+ * @LastEditTime: 2022-08-05 18:59:55
  */
 const i18n = {
   'en-US': {},
@@ -13,6 +13,8 @@ const i18n = {
     'searchForm.account': '账号',
     'searchForm.account.placeholder': '请输入账号',
     'searchForm.status': '状态',
+    'searchForm.use': '启用',
+    'searchForm.forbidden': '停用',
     'searchForm.status.placeholder': '请选择状态',
     'searchForm.nickname': '名称',
     'searchForm.nickname.placeholder': '名称',
@@ -20,6 +22,8 @@ const i18n = {
     'searchForm.form.reset': '重置',
     'searchForm.createDate': '创建时间',
     'searchForm.createDate.placeholder': '请选择创建时间',
+    'searchForm.sex.placeholder': '请选择性别',
+    'searchForm.sex': '性别',
     'action.button.create': '新建',
     'user.nickname': '用户昵称',
     'user.account': '用户账号',
@@ -36,8 +40,8 @@ const i18n = {
     'user.modal.nicknamePlaceholder': '请输入用户名称',
     'user.modal.account': '用户账号',
     'user.modal.accountPlaceholder': '请输入用户账号',
-    'user.modal.passwrod': '用户密码',
-    'user.modal.passwrodPlaceholder': '请输入用户密码',
+    'user.modal.password': '用户密码',
+    'user.modal.passwordPlaceholder': '请输入用户密码',
     'user.modal.age': '年龄',
     'user.modal.agePlaceholder': '请输入年龄',
     'user.modal.sex': '性别',
