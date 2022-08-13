@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-07-26 22:14:33
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-05 20:00:58
+ * @LastEditTime: 2022-08-14 04:25:58
  */
 import { InitPageParmas } from '@/hooks/usePageParams';
 import request from '@/utils/request/http';
@@ -55,7 +55,7 @@ export const editUser = (data: EditUserParams): Promise<any> =>
  * @author: ldm
  */
 export const createUser = (data: CreateUserParams): Promise<any> =>
-  request.qsPost('/user/create', { ...data });
+  request.post('/user/create', { ...data });
 
 /**
  * @description: 获取角色列表
@@ -63,3 +63,11 @@ export const createUser = (data: CreateUserParams): Promise<any> =>
  * @author: ldm
  */
 export const fetchRoleList = (): Promise<any> => request.get('/role/list');
+
+/**
+ * @description: 删除用户
+ * @return {*}
+ * @author: ldm
+ */
+export const deleteUser = (ids: string[]): Promise<any> =>
+  request.deletefn('/user/delete', { data: ids });

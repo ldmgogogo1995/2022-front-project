@@ -4,12 +4,12 @@
  * @Autor: ldm
  * @Date: 2022-07-31 19:25:19
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-05 20:04:58
+ * @LastEditTime: 2022-08-07 01:46:28
  */
 
 import locale from '../locale';
 import { Form, Input, InputNumber, Message, Modal, Radio, Select } from '@arco-design/web-react';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { roleListQuery, userIdAtom, userInfoQuery, visibleAtom } from '../model';
 import { useLocale } from '@/hooks';
@@ -68,24 +68,38 @@ const CreateModal: React.FC<IProps> = () => {
         setLoading(true);
         if (values.id) {
           res = await editUser(values).finally(() => {
+            console.log('update done');
             setLoading(false);
           });
         } else {
           res = await createUser(values).finally(() => {
+            console.log('cerate done');
             setLoading(false);
           });
         }
         if (res?.code === C.SUCCESS_CODE) {
           Message.success(c['actions.success']);
           setVisible(false);
+        } else {
+          Message.error(res.message);
         }
       } catch (error) {
         console.error(error);
       }
     });
   }, []);
+  useEffect(() => {
+    console.log('11');
+  }, []);
   return (
-    <Modal onCancel={handleCancel} onOk={handleSubmit} visible={visible} title={title}>
+    <Modal
+      onCancel={handleCancel}
+      onOk={handleSubmit}
+      confirmLoading={loading}
+      visible={visible}
+      title={title}
+      unmountOnExit
+    >
       <Form form={form}>
         <Form.Item
           label={t['user.modal.nickname']}

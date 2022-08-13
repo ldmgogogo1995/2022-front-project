@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-02 14:20:02
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-05 19:52:37
+ * @LastEditTime: 2022-08-14 04:12:24
  */
 
 import axios, { AxiosRequestConfig } from 'axios';
@@ -19,7 +19,7 @@ const instance = axios.create({
   },
   timeout: REQUEST.TIMEOUT,
   withCredentials: true,
-  // transformRequest: (data) => qs.stringify(data),
+  transformRequest: (data) => Qs.stringify(data),
 });
 
 /**
@@ -27,7 +27,7 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(
   (config) => {
-    // 携带token const userInfo = JSON.parse(localStorage.getItem('USER_INFO')))
+    // 携带token
     let token = '';
     if (localStorage.getItem('USER_INFO')) {
       const userInfo = JSON.parse(localStorage.getItem('USER_INFO'));
@@ -110,23 +110,6 @@ export default {
         });
     });
   },
-  /**
-   * post方法，参数序列化
-   * @param {String} url [请求的url地址]
-   * @param {Object} params [请求时携带的参数]
-   */
-  qsPost(url: string, params?: object) {
-    return new Promise((resolve, reject) => {
-      instance
-        .post(url, Qs.stringify(params))
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch((err) => {
-          reject(err.data);
-        });
-    });
-  },
 
   /**
    * put方法，对应put请求
@@ -154,6 +137,7 @@ export default {
   deletefn(url: string, params?: AxiosRequestConfig<any>) {
     return new Promise((resolve, reject) => {
       instance
+
         .delete(url, params)
         .then((res) => {
           resolve(res.data);

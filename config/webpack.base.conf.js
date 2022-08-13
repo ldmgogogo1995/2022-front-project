@@ -12,7 +12,7 @@ const commonStyleLoder = [
   {
     loader: MiniCssExtractPlugin.loader,
     options: {
-      publicPath: './',
+      publicPath: '/',
     },
   },
   // Translates CSS into CommonJS
@@ -75,7 +75,7 @@ const baseConfig = {
           {
             loader: 'babel-loader',
             options: {
-              // 第二次构建bable会读取之前的缓存
+              // 第二次构建babel会读取之前的缓存
               cacheDirectory: true,
               presets: [
                 [
@@ -164,7 +164,6 @@ const baseConfig = {
           '^/api': '/api',
         },
         changeOrigin: true,
-        logLevel: 'debug',
       },
     },
   },

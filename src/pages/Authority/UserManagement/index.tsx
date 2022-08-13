@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-05 00:16:49
+ * @LastEditTime: 2022-08-14 04:29:18
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -16,13 +16,14 @@ import {
   Message,
   Divider,
   Spin,
+  Popconfirm,
 } from '@arco-design/web-react';
 import React, { Suspense, useCallback, useMemo, useState } from 'react';
 import locale from './locale';
 import SearchForm from './SearchForm';
 import styles from './index.module.less';
 import { IconPlus } from '@arco-design/web-react/icon';
-import { fetchUserList, QueryUserListParams } from './server';
+import { deleteUser, fetchUserList, QueryUserListParams } from './server';
 import { C } from '@/constants/common';
 import CustomPagination from '@/components/CustomPagination';
 import usePageParams, { InitPageParmas } from '@/hooks/usePageParams';
@@ -30,11 +31,13 @@ import CustomButton from '@/components/CustomButton';
 import CreateModal from './CreateModal';
 import { useRecoilState } from 'recoil';
 import { visibleAtom } from './model';
+import { dateFormat } from '@/utils/dateUtils';
 
 const UserManagement: React.FC = () => {
   const t = useLocale(locale);
   const c = useLocale();
-  const columns: TableColumnProps[] = useMemo(
+
+  const columns: TableColumnProps<{ id: string }>[] = useMemo(
     () => [
       {
         title: c['table.sequence'],
@@ -55,6 +58,7 @@ const UserManagement: React.FC = () => {
         title: t['user.createDate'],
         dataIndex: 'createDate',
         sorter: true,
+        render: (text) => dateFormat(text),
       },
       {
         title: t['user.roles'],
@@ -69,7 +73,14 @@ const UserManagement: React.FC = () => {
             <>
               <CustomButton CustomType="ACTION_BTN">{c['actions.edit']}</CustomButton>
               <Divider type="vertical" />
-              <CustomButton CustomType="ACTION_BTN">{c['actions.delete']}</CustomButton>
+              <Popconfirm
+                title={c['actions.deleteWain']}
+                onOk={() => {
+                  handelDelete(record.id);
+                }}
+              >
+                <CustomButton CustomType="ACTION_BTN">{c['actions.delete']}</CustomButton>
+              </Popconfirm>
             </>
           );
         },
@@ -93,7 +104,9 @@ const UserManagement: React.FC = () => {
       doSearch(pageParams);
     }
   }, [visible]);
+
   /*---method---*/
+
   /**
    * @description:获取用户列表
    * @return {*}
@@ -145,6 +158,25 @@ const UserManagement: React.FC = () => {
   const [pageParams, setPageParams] = usePageParams({ current: 1, pageSize: 20 }, doSearch, [
     formParams,
   ]);
+  /**
+   * @description: 删除用户
+   * @return {*}
+   * @author: ldm
+   */
+  const handelDelete = useCallback(
+    async (id) => {
+      try {
+        const res = await deleteUser([id]);
+        if (res.code === C.SUCCESS_CODE) {
+          Message.success(c['actions.success']);
+          doSearch(pageParams);
+        } else {
+          Message.error(res.message);
+        }
+      } catch (error) {}
+    },
+    [pageParams]
+  );
 
   return (
     <Card

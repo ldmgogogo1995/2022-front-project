@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-23 00:44:22
  * @LastEditors: ldm
- * @LastEditTime: 2022-03-24 01:56:31
+ * @LastEditTime: 2022-08-14 04:11:22
  */
 
 import request from '@/utils/request/http';
@@ -13,4 +13,4 @@ export type LoginParams = {
   password: string;
 };
 export const login = (data: LoginParams): Promise<any> =>
-  request.qsPost('/common/login', { ...data });
+  request.post('/common/login', { ...data });
