@@ -4,7 +4,7 @@ import * as React from 'react';
  * @Author: ldm
  * @Date: 2021-11-22 16:06:07
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-01 02:34:42
+ * @LastEditTime: 2022-08-14 04:56:04
  * @Description: 公共头部
  */
 import { Layout, Menu, Breadcrumb, Button, Avatar, Dropdown } from '@arco-design/web-react';
@@ -22,7 +22,7 @@ const GlobalHeader: React.FC = () => {
       <div className="left-content">
         <div className="logo">
           <Logo />
-          <div className="name-text">DM EMG</div>
+          <div className="name-text">3kko</div>
         </div>
       </div>
       <div className="right-content">
