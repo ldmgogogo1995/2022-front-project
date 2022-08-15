@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-07-31 19:25:19
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-07 01:46:28
+ * @LastEditTime: 2022-08-16 00:49:36
  */
 
 import locale from '../locale';
@@ -33,14 +33,20 @@ const CreateModal: React.FC<IProps> = () => {
     () => (userId ? t['user.modal.editTitle'] : t['user.modal.createTitle']),
     [t, userId]
   );
+
   const roleOptions = useMemo(
     () =>
-      roleList.map((role) => ({
+      (roleList ?? []).map((role) => ({
         label: role.name,
         value: role.id,
       })),
     [roleList]
   );
+
+  const initialValues = useMemo(() => {
+    const { createDate, updateDate, id, status, ...target } = userInfo;
+    return target;
+  }, [userInfo]);
   /*--state--*/
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -66,14 +72,12 @@ const CreateModal: React.FC<IProps> = () => {
       try {
         let res;
         setLoading(true);
-        if (values.id) {
+        if (userId) {
           res = await editUser(values).finally(() => {
-            console.log('update done');
             setLoading(false);
           });
         } else {
           res = await createUser(values).finally(() => {
-            console.log('cerate done');
             setLoading(false);
           });
         }
@@ -87,10 +91,7 @@ const CreateModal: React.FC<IProps> = () => {
         console.error(error);
       }
     });
-  }, []);
-  useEffect(() => {
-    console.log('11');
-  }, []);
+  }, [userId]);
   return (
     <Modal
       onCancel={handleCancel}
@@ -99,8 +100,9 @@ const CreateModal: React.FC<IProps> = () => {
       visible={visible}
       title={title}
       unmountOnExit
+      mountOnEnter={false}
     >
-      <Form form={form}>
+      <Form form={form} initialValues={initialValues}>
         <Form.Item
           label={t['user.modal.nickname']}
           field="nickname"
@@ -112,6 +114,7 @@ const CreateModal: React.FC<IProps> = () => {
           label={t['user.modal.account']}
           field="account"
           rules={[{ required: true, message: t['user.modal.accountPlaceholder'] }]}
+          disabled={!!userId}
         >
           <Input placeholder={t['user.modal.accountPlaceholder']} max={50} />
         </Form.Item>

@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-03-20 00:55:21
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-05 18:59:55
+ * @LastEditTime: 2022-08-16 00:44:17
  */
 const i18n = {
   'en-US': {},
@@ -27,7 +27,6 @@ const i18n = {
     'action.button.create': '新建',
     'user.nickname': '用户昵称',
     'user.account': '用户账号',
-    'user.createDate': '创建时间',
     'user.No': '序号',
     'user.status': '用户状态',
     'user.roles': '关联角色',

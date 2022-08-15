@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-14 04:29:18
+ * @LastEditTime: 2022-08-16 02:00:29
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -30,8 +30,9 @@ import usePageParams, { InitPageParmas } from '@/hooks/usePageParams';
 import CustomButton from '@/components/CustomButton';
 import CreateModal from './CreateModal';
 import { useRecoilState } from 'recoil';
-import { visibleAtom } from './model';
+import { userIdAtom, visibleAtom } from './model';
 import { dateFormat } from '@/utils/dateUtils';
+import { SorterResult } from '@arco-design/web-react/es/Table/interface';
 
 const UserManagement: React.FC = () => {
   const t = useLocale(locale);
@@ -55,8 +56,14 @@ const UserManagement: React.FC = () => {
         ellipsis: true,
       },
       {
-        title: t['user.createDate'],
+        title: c['table.createDate'],
         dataIndex: 'createDate',
+        sorter: true,
+        render: (text) => dateFormat(text),
+      },
+      {
+        title: c['table.updateDate'],
+        dataIndex: 'updateDate',
         sorter: true,
         render: (text) => dateFormat(text),
       },
@@ -71,7 +78,9 @@ const UserManagement: React.FC = () => {
         render: (_, record) => {
           return (
             <>
-              <CustomButton CustomType="ACTION_BTN">{c['actions.edit']}</CustomButton>
+              <CustomButton onClick={() => handleEdit(record)} CustomType="ACTION_BTN">
+                {c['actions.edit']}
+              </CustomButton>
               <Divider type="vertical" />
               <Popconfirm
                 title={c['actions.deleteWain']}
@@ -91,11 +100,13 @@ const UserManagement: React.FC = () => {
 
   /*---recoil---*/
   const [visible, setVisible] = useRecoilState<boolean>(visibleAtom);
+  const [_, setUserId] = useRecoilState<string>(userIdAtom);
   /*---state---*/
   const [data, setData] = useState([]); // 用户数据
   const [loading, setLoading] = useState<boolean>(false); // loading状态
   const [formParams, setFormParams] = useState<Partial<QueryUserListParams>>({});
   const [total, setTotal] = useState<number>(0);
+  const [sorter, setSorter] = useState<SorterResult>({});
 
   /*---effetc---*/
   useUpdateEffect(() => {
@@ -119,6 +130,7 @@ const UserManagement: React.FC = () => {
         const params = {
           ...pageParams,
           ...formParams,
+          ...sorter,
         };
         const res = await fetchUserList(params).finally(() => setLoading(false));
         if (res.code === C.SUCCESS_CODE) {
@@ -131,7 +143,7 @@ const UserManagement: React.FC = () => {
         console.error(error);
       }
     },
-    [formParams]
+    [formParams, sorter]
   );
 
   /**
@@ -143,7 +155,7 @@ const UserManagement: React.FC = () => {
     (pageParams: InitPageParmas) => {
       getUserList(pageParams);
     },
-    [formParams]
+    [formParams, sorter]
   );
 
   /**
@@ -157,6 +169,7 @@ const UserManagement: React.FC = () => {
   /*--customHook--*/
   const [pageParams, setPageParams] = usePageParams({ current: 1, pageSize: 20 }, doSearch, [
     formParams,
+    sorter,
   ]);
   /**
    * @description: 删除用户
@@ -178,6 +191,24 @@ const UserManagement: React.FC = () => {
     [pageParams]
   );
 
+  /**
+   * @description:点击编辑按钮
+   * @return {*}
+   * @author: ldm
+   */
+  const handleEdit = useCallback((record) => {
+    setUserId(record.id);
+    setVisible(true);
+  }, []);
+
+  /**
+   * @description:表格排序、筛选
+   * @return {*}
+   * @author: ldm
+   */
+  const handleTableChange = useCallback((...arg) => {
+    setSorter(arg?.at(1));
+  }, []);
   return (
     <Card
       title={t['menu.userManagement.searchTable']}
@@ -192,7 +223,14 @@ const UserManagement: React.FC = () => {
         </Space>
       </div>
       <div style={{ marginBottom: 20 }}>
-        <Table rowKey="id" data={data} columns={columns} pagination={false} loading={loading} />
+        <Table
+          rowKey="id"
+          data={data}
+          columns={columns}
+          pagination={false}
+          loading={loading}
+          onChange={handleTableChange}
+        />
       </div>
       <CustomPagination
         pageSize={pageParams.pageSize}
@@ -209,7 +247,12 @@ const UserManagement: React.FC = () => {
         }}
       />
       <Suspense fallback={<Spin loading={true} />}>
-        <CreateModal />
+        {useMemo(
+          () => (
+            <CreateModal />
+          ),
+          []
+        )}
       </Suspense>
     </Card>
   );

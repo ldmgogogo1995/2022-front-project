@@ -4,12 +4,14 @@
  * @Autor: ldm
  * @Date: 2022-07-26 22:14:33
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-14 04:25:58
+ * @LastEditTime: 2022-08-16 01:15:55
  */
+import { FetchListParamsType } from '@/index';
 import { InitPageParmas } from '@/hooks/usePageParams';
 import request from '@/utils/request/http';
+import { SorterResult } from '@arco-design/web-react/es/Table/interface';
 
-export interface QueryUserListParams extends InitPageParmas {
+export interface QueryUserListParams extends FetchListParamsType {
   account: string;
   nickname: string;
   status: string;
