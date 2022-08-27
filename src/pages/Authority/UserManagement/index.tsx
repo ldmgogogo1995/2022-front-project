@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-16 02:00:29
+ * @LastEditTime: 2022-08-28 05:32:34
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -17,6 +17,7 @@ import {
   Divider,
   Spin,
   Popconfirm,
+  Tag,
 } from '@arco-design/web-react';
 import React, { Suspense, useCallback, useMemo, useState } from 'react';
 import locale from './locale';
@@ -38,7 +39,7 @@ const UserManagement: React.FC = () => {
   const t = useLocale(locale);
   const c = useLocale();
 
-  const columns: TableColumnProps<{ id: string }>[] = useMemo(
+  const columns: TableColumnProps[] = useMemo(
     () => [
       {
         title: c['table.sequence'],
@@ -71,6 +72,17 @@ const UserManagement: React.FC = () => {
         title: t['user.roles'],
         dataIndex: 'roles',
         ellipsis: true,
+        render: (roles) => {
+          return (
+            <>
+              {(roles ?? []).map((role) => (
+                <Tag bordered key={role.id}>
+                  {role.name}
+                </Tag>
+              ))}
+            </>
+          );
+        },
       },
       {
         title: c['table.actions'],
@@ -110,9 +122,10 @@ const UserManagement: React.FC = () => {
 
   /*---effetc---*/
   useUpdateEffect(() => {
-    //关闭弹窗时刷新列表页
+    //关闭弹窗时刷新列表页并且重置用户id
     if (!visible) {
       doSearch(pageParams);
+      setUserId('');
     }
   }, [visible]);
 
@@ -247,12 +260,7 @@ const UserManagement: React.FC = () => {
         }}
       />
       <Suspense fallback={<Spin loading={true} />}>
-        {useMemo(
-          () => (
-            <CreateModal />
-          ),
-          []
-        )}
+        {useMemo(() => visible && <CreateModal />, [visible])}
       </Suspense>
     </Card>
   );

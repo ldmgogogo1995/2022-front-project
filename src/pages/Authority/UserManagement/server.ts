@@ -4,12 +4,11 @@
  * @Autor: ldm
  * @Date: 2022-07-26 22:14:33
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-16 01:15:55
+ * @LastEditTime: 2022-08-28 05:01:42
  */
 import { FetchListParamsType } from '@/index';
 import { InitPageParmas } from '@/hooks/usePageParams';
 import request from '@/utils/request/http';
-import { SorterResult } from '@arco-design/web-react/es/Table/interface';
 
 export interface QueryUserListParams extends FetchListParamsType {
   account: string;
@@ -19,7 +18,21 @@ export interface QueryUserListParams extends FetchListParamsType {
   endCreateDate: number;
 }
 
-export interface CreateUserParams {}
+export interface Role {
+  name: string;
+  id: string;
+}
+
+export interface CreateUserParams {
+  account: string;
+  nickname: string;
+  password: string;
+  sex: string;
+  age: number;
+  email: string;
+  phone: number;
+  roles: Role[];
+}
 
 export interface EditUserParams extends CreateUserParams {
   id: string;

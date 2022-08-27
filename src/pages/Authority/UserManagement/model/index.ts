@@ -4,12 +4,12 @@
  * @Autor: ldm
  * @Date: 2022-08-01 01:57:37
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-05 19:29:14
+ * @LastEditTime: 2022-08-28 06:05:06
  */
 
 import { C } from '@/constants/common';
 import { Message } from '@arco-design/web-react';
-import { atom, atomFamily, selector, selectorFamily } from 'recoil';
+import { atom, atomFamily, selector, selectorFamily, useSetRecoilState } from 'recoil';
 import { fetchRoleList, fetchUserDetail } from '../server';
 
 export const userIdAtom = atom<string>({
@@ -21,20 +21,19 @@ export const visibleAtom = atom<boolean>({
   key: 'UserCreateModalVisible',
   default: false,
 });
-
 export const userInfoQueryRequestIDState = atomFamily({
   key: 'UserInfoQueryRequestID',
   default: '',
 });
-
 export const userInfoQuery = selectorFamily({
   key: 'UserInfoQuery',
   get:
     (userID: string) =>
     async ({ get }) => {
       try {
-        get(userInfoQueryRequestIDState(userID)); // 添加请求ID作为依赖关系
-        if (!userID) return {};
+        const visible = get(visibleAtom);
+        get(userInfoQueryRequestIDState(userID));
+        if (!visible || !userID) return {};
         const res = await fetchUserDetail(userID);
         if (res.code === C.SUCCESS_CODE) {
           return res.data;
@@ -63,3 +62,14 @@ export const roleListQuery = selector({
     } catch (error) {}
   },
 });
+/**
+ * @description:刷新用户信息
+ * @return {*}
+ * @author: ldm
+ */
+export function useRefreshUserInfo(userID: string) {
+  const setUserInfoQueryRequestID = useSetRecoilState(userInfoQueryRequestIDState(userID));
+  return () => {
+    setUserInfoQueryRequestID(userID);
+  };
+}

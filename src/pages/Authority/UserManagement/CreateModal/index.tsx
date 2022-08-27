@@ -4,17 +4,27 @@
  * @Autor: ldm
  * @Date: 2022-07-31 19:25:19
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-16 00:49:36
+ * @LastEditTime: 2022-08-28 06:03:10
  */
 
 import locale from '../locale';
 import { Form, Input, InputNumber, Message, Modal, Radio, Select } from '@arco-design/web-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { roleListQuery, userIdAtom, userInfoQuery, visibleAtom } from '../model';
-import { useLocale } from '@/hooks';
-import { createUser, editUser } from '../server';
+import {
+  roleListQuery,
+  useRefreshUserInfo,
+  userIdAtom,
+  userInfoQuery,
+  visibleAtom,
+} from '../model';
+import { useLocale, useUpdateEffect } from '@/hooks';
+import { createUser, CreateUserParams, editUser, EditUserParams } from '../server';
 import { C } from '@/constants/common';
+const initialValues: Partial<CreateUserParams> = {
+  sex: 'man',
+  age: 18,
+};
 
 const { useForm } = Form;
 interface IProps {}
@@ -23,11 +33,14 @@ const CreateModal: React.FC<IProps> = () => {
   const [form] = useForm();
   const t = useLocale(locale);
   const c = useLocale();
+
   /*--recoil--*/
   const userId = useRecoilValue(userIdAtom); //用户id
-  const userInfo = useRecoilValue(userInfoQuery(userId)); // 用户信息
+  const userInfo = useRecoilValue<Partial<EditUserParams>>(userInfoQuery(userId)); // 用户信息
   const roleList = useRecoilValue(roleListQuery);
   const [visible, setVisible] = useRecoilState(visibleAtom);
+  const refreshUserInfo = useRefreshUserInfo(userId);
+
   /*--memo--*/
   const title = useMemo(
     () => (userId ? t['user.modal.editTitle'] : t['user.modal.createTitle']),
@@ -42,14 +55,25 @@ const CreateModal: React.FC<IProps> = () => {
       })),
     [roleList]
   );
-
-  const initialValues = useMemo(() => {
-    const { createDate, updateDate, id, status, ...target } = userInfo;
-    return target;
-  }, [userInfo]);
   /*--state--*/
 
   const [loading, setLoading] = useState<boolean>(false);
+
+  /*--effect--*/
+  // 刷新用户信息
+  useEffect(() => {
+    if (visible && userId) {
+      refreshUserInfo();
+    } else {
+      form.resetFields();
+    }
+  }, [visible]);
+
+  //根据用户信息更新表单值
+  useEffect(() => {
+    const roleData = { ...userInfo, roles: (userInfo.roles ?? []).map((role) => role.id) };
+    form.setFieldsValue(roleData);
+  }, [userInfo]);
 
   /*--method--*/
   /**
@@ -61,7 +85,6 @@ const CreateModal: React.FC<IProps> = () => {
   const handleCancel = useCallback(() => {
     setVisible(false);
   }, []);
-
   /**
    * @description: 提交表单
    * @return {*}
@@ -73,7 +96,7 @@ const CreateModal: React.FC<IProps> = () => {
         let res;
         setLoading(true);
         if (userId) {
-          res = await editUser(values).finally(() => {
+          res = await editUser({ ...values, id: userId }).finally(() => {
             setLoading(false);
           });
         } else {
@@ -158,7 +181,7 @@ const CreateModal: React.FC<IProps> = () => {
           field="phone"
           rules={[{ required: true, message: t['user.modal.rightPhone'] }]}
         >
-          <InputNumber max={18} placeholder={t['user.modal.phonePlaceholder']} />
+          <InputNumber hideControl placeholder={t['user.modal.phonePlaceholder']} />
         </Form.Item>
         <Form.Item
           label={t['user.modal.bindRoles']}
