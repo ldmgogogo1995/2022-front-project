@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-09-17 12:20:41
+ * @LastEditTime: 2022-09-18 21:23:34
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -85,6 +85,13 @@ const UserManagement: React.FC = () => {
         },
       },
       {
+        title: t['user.status'],
+        dataIndex: 'status',
+        render: (status) => {
+          return renderUserStatus(status);
+        },
+      },
+      {
         title: c['table.actions'],
         dataIndex: 'actions',
         render: (_, record) => {
@@ -131,6 +138,20 @@ const UserManagement: React.FC = () => {
 
   /*---method---*/
 
+  /**
+   * @description:渲染用户状态
+   * @return {*}
+   * @author: ldm
+   */
+  const renderUserStatus = useCallback((status) => {
+    console.log(status, 'sss');
+    switch (status) {
+      case 1:
+        return <Tag color="#00b42a">{t['searchForm.isUse']}</Tag>;
+      default:
+        return <Tag color="#f53f3f">{t['searchForm.isForbidden']}</Tag>;
+    }
+  }, []);
   /**
    * @description:获取用户列表
    * @return {*}
@@ -183,8 +204,8 @@ const UserManagement: React.FC = () => {
   const [pageParams, setPageParams] = usePageParams({ current: 1, pageSize: 20 }, doSearch, [
     formParams,
     sorter,
-  ])
-  
+  ]);
+
   /**
    * @description: 删除用户
    * @return {*}

@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-28 05:32:34
+ * @LastEditTime: 2022-09-18 21:06:23
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -83,6 +83,11 @@ const UserManagement: React.FC = () => {
             </>
           );
         },
+      },
+      {
+        title: t['user.status'],
+        dataIndex: 'status',
+        // render: ,
       },
       {
         title: c['table.actions'],
