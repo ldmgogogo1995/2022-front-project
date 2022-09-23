@@ -4,10 +4,9 @@
  * @Autor: ldm
  * @Date: 2022-07-26 22:14:33
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-28 05:01:42
+ * @LastEditTime: 2022-09-24 02:16:01
  */
 import { FetchListParamsType } from '@/index';
-import { InitPageParmas } from '@/hooks/usePageParams';
 import request from '@/utils/request/http';
 
 export interface QueryUserListParams extends FetchListParamsType {
@@ -86,3 +85,11 @@ export const fetchRoleList = (): Promise<any> => request.get('/role/list');
  */
 export const deleteUser = (ids: string[]): Promise<any> =>
   request.deletefn('/user/delete', { data: ids });
+
+/**
+ * @description: 修改用户状态
+ * @return {*}
+ * @author: ldm
+ */
+export const updateStatus = (data: { id: string; status: number }): Promise<any> =>
+  request.put('/user/updateStatus', { ...data });

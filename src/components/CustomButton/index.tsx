@@ -7,15 +7,16 @@ import React from 'react';
  * @Autor: ldm
  * @Date: 2022-07-29 02:07:15
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-10 21:42:49
+ * @LastEditTime: 2022-09-19 00:18:45
  */
 interface IProps {
   CustomType: 'ACTION_BTN';
   [key: string]: any;
 }
+export const ACTION_BTN = 'ACTION_BTN';
 const CustomButton: React.FC<IProps> = ({ CustomType, children, ...props }) => {
   switch (CustomType) {
-    case 'ACTION_BTN':
+    case ACTION_BTN:
       return (
         <Button {...props} type="text" size="small">
           {children}

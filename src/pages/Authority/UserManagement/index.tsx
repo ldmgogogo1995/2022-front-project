@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-09-18 21:23:34
+ * @LastEditTime: 2022-09-24 02:17:30
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -18,22 +18,25 @@ import {
   Spin,
   Popconfirm,
   Tag,
+  Typography,
 } from '@arco-design/web-react';
 import React, { Suspense, useCallback, useMemo, useState } from 'react';
 import locale from './locale';
 import SearchForm from './SearchForm';
 import styles from './index.module.less';
 import { IconPlus } from '@arco-design/web-react/icon';
-import { deleteUser, fetchUserList, QueryUserListParams } from './server';
+import { deleteUser, fetchUserList, QueryUserListParams, updateStatus } from './server';
 import { C } from '@/constants/common';
 import CustomPagination from '@/components/CustomPagination';
 import usePageParams, { InitPageParmas } from '@/hooks/usePageParams';
-import CustomButton from '@/components/CustomButton';
+import CustomButton, { ACTION_BTN } from '@/components/CustomButton';
 import CreateModal from './CreateModal';
 import { useRecoilState } from 'recoil';
 import { userIdAtom, visibleAtom } from './model';
 import { dateFormat } from '@/utils/dateUtils';
 import { SorterResult } from '@arco-design/web-react/es/Table/interface';
+
+const { Text } = Typography;
 
 const UserManagement: React.FC = () => {
   const t = useLocale(locale);
@@ -45,6 +48,8 @@ const UserManagement: React.FC = () => {
         title: c['table.sequence'],
         dataIndex: 'number',
         render: (...arg) => arg.at(2) + 1,
+        width: 60,
+        fixed: 'left',
       },
       {
         title: t['user.nickname'],
@@ -55,6 +60,7 @@ const UserManagement: React.FC = () => {
         title: t['user.account'],
         dataIndex: 'account',
         ellipsis: true,
+        render: (text) => <Text copyable>{text}</Text>,
       },
       {
         title: c['table.createDate'],
@@ -94,11 +100,18 @@ const UserManagement: React.FC = () => {
       {
         title: c['table.actions'],
         dataIndex: 'actions',
+        width: 300,
+        fixed: 'right',
         render: (_, record) => {
+          const isUse = record.status === 1;
           return (
             <>
-              <CustomButton onClick={() => handleEdit(record)} CustomType="ACTION_BTN">
+              <CustomButton onClick={() => handleEdit(record)} CustomType={ACTION_BTN}>
                 {c['actions.edit']}
+              </CustomButton>
+              <Divider type="vertical" />
+              <CustomButton CustomType={ACTION_BTN} onClick={() => handleUpdateStatus(record)}>
+                {c[`actions.${isUse ? 'forbidden' : 'use'}`]}
               </CustomButton>
               <Divider type="vertical" />
               <Popconfirm
@@ -107,7 +120,7 @@ const UserManagement: React.FC = () => {
                   handelDelete(record.id);
                 }}
               >
-                <CustomButton CustomType="ACTION_BTN">{c['actions.delete']}</CustomButton>
+                <CustomButton CustomType={ACTION_BTN}>{c['actions.delete']}</CustomButton>
               </Popconfirm>
             </>
           );
@@ -144,7 +157,6 @@ const UserManagement: React.FC = () => {
    * @author: ldm
    */
   const renderUserStatus = useCallback((status) => {
-    console.log(status, 'sss');
     switch (status) {
       case 1:
         return <Tag color="#00b42a">{t['searchForm.isUse']}</Tag>;
@@ -200,6 +212,27 @@ const UserManagement: React.FC = () => {
   const handleCreateUser = useCallback(() => {
     setVisible(true);
   }, []);
+
+  /**
+   * @description:修改用户状态
+   * @return {*}
+   * @author: ldm
+   */
+  const handleUpdateStatus = useCallback(async (record) => {
+    const id = record.id;
+    const status = record.status === 1 ? 0 : 1;
+    try {
+      const res = await updateStatus({ id, status });
+      if (res.code === C.SUCCESS_CODE) {
+        doSearch(pageParams);
+      } else {
+        Message.error(res.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
   /*--customHook--*/
   const [pageParams, setPageParams] = usePageParams({ current: 1, pageSize: 20 }, doSearch, [
     formParams,
@@ -265,6 +298,7 @@ const UserManagement: React.FC = () => {
           pagination={false}
           loading={loading}
           onChange={handleTableChange}
+          scroll={{ x: 1600 }}
         />
       </div>
       <CustomPagination

@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-09-18 21:06:23
+ * @LastEditTime: 2022-09-19 00:14:54
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -18,6 +18,7 @@ import {
   Spin,
   Popconfirm,
   Tag,
+  Typography,
 } from '@arco-design/web-react';
 import React, { Suspense, useCallback, useMemo, useState } from 'react';
 import locale from './locale';
@@ -35,6 +36,8 @@ import { userIdAtom, visibleAtom } from './model';
 import { dateFormat } from '@/utils/dateUtils';
 import { SorterResult } from '@arco-design/web-react/es/Table/interface';
 
+const { Text } = Typography;
+
 const UserManagement: React.FC = () => {
   const t = useLocale(locale);
   const c = useLocale();
@@ -50,6 +53,7 @@ const UserManagement: React.FC = () => {
         title: t['user.nickname'],
         dataIndex: 'nickname',
         ellipsis: true,
+        render: (text) => <Text copyable>{text}</Text>,
       },
       {
         title: t['user.account'],

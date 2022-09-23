@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-01-09 05:45:48
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-28 01:43:33
+ * @LastEditTime: 2022-09-24 02:12:18
  */
 import { useEffect, useState } from 'react';
 
@@ -22,7 +22,11 @@ const usePageParams = (
 
   useEffect(() => {
     cb?.(pageParams);
-  }, [pageParams, ...deps]);
+  }, [pageParams]);
+
+  useEffect(() => {
+    setPageParams({ ...pageParams, current: 1 });
+  }, [...deps]);
 
   return [pageParams, setPageParams];
 };
