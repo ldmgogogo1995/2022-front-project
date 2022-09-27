@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-07-31 19:25:19
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-28 06:03:10
+ * @LastEditTime: 2022-09-28 01:30:41
  */
 
 import locale from '../locale';
@@ -21,6 +21,7 @@ import {
 import { useLocale, useUpdateEffect } from '@/hooks';
 import { createUser, CreateUserParams, editUser, EditUserParams } from '../server';
 import { C } from '@/constants/common';
+import { INPUT } from '@/constants/component';
 const initialValues: Partial<CreateUserParams> = {
   sex: 'man',
   age: 18,
@@ -193,6 +194,14 @@ const CreateModal: React.FC<IProps> = () => {
             mode="multiple"
             allowClear
             options={roleOptions}
+          />
+        </Form.Item>
+        <Form.Item label={t['user.modal.description']} field="description">
+          <Input.TextArea
+            placeholder={t['user.modal.descriptionPlaceholder']}
+            allowClear
+            showWordLimit
+            maxLength={INPUT.TEXTAREA.MAXLENGTH}
           />
         </Form.Item>
       </Form>

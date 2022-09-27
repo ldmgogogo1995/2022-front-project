@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-09-19 00:14:54
+ * @LastEditTime: 2022-09-28 01:00:48
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -45,18 +45,13 @@ const UserManagement: React.FC = () => {
   const columns: TableColumnProps[] = useMemo(
     () => [
       {
-        title: c['table.sequence'],
-        dataIndex: 'number',
-        render: (...arg) => arg.at(2) + 1,
-      },
-      {
-        title: t['user.nickname'],
+        title: t['role.nickname'],
         dataIndex: 'nickname',
         ellipsis: true,
         render: (text) => <Text copyable>{text}</Text>,
       },
       {
-        title: t['user.account'],
+        title: t['role.account'],
         dataIndex: 'account',
         ellipsis: true,
       },
@@ -73,7 +68,7 @@ const UserManagement: React.FC = () => {
         render: (text) => dateFormat(text),
       },
       {
-        title: t['user.roles'],
+        title: t['role.roles'],
         dataIndex: 'roles',
         ellipsis: true,
         render: (roles) => {
@@ -89,7 +84,7 @@ const UserManagement: React.FC = () => {
         },
       },
       {
-        title: t['user.status'],
+        title: t['role.status'],
         dataIndex: 'status',
         // render: ,
       },

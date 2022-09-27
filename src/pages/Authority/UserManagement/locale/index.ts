@@ -4,28 +4,28 @@
  * @Autor: ldm
  * @Date: 2022-03-20 00:55:21
  * @LastEditors: ldm
- * @LastEditTime: 2022-09-18 21:19:32
+ * @LastEditTime: 2022-09-28 01:20:48
  */
 const i18n = {
   'en-US': {},
   'zh-CN': {
     'menu.userManagement.searchTable': '查询表格',
-    'searchForm.account': '账号',
-    'searchForm.account.placeholder': '请输入账号',
-    'searchForm.status': '状态',
+    'searchForm.account': '用户账号',
+    'searchForm.account.placeholder': '请输入用户账号',
+    'searchForm.status': '用户状态',
     'searchForm.use': '启用',
     'searchForm.forbidden': '停用',
     'searchForm.isUse': '已启用',
     'searchForm.isForbidden': '已停用',
-    'searchForm.status.placeholder': '请选择状态',
-    'searchForm.nickname': '名称',
-    'searchForm.nickname.placeholder': '名称',
+    'searchForm.status.placeholder': '请选择用户状态',
+    'searchForm.nickname': '用户名称',
+    'searchForm.nickname.placeholder': '用户名称',
     'searchForm.form.search': '查询',
     'searchForm.form.reset': '重置',
     'searchForm.createDate': '创建时间',
     'searchForm.createDate.placeholder': '请选择创建时间',
-    'searchForm.sex.placeholder': '请选择性别',
-    'searchForm.sex': '性别',
+    'searchForm.sex.placeholder': '请选择用户性别',
+    'searchForm.sex': '用户性别',
     'action.button.create': '新建',
     'user.nickname': '用户昵称',
     'user.account': '用户账号',
@@ -56,6 +56,8 @@ const i18n = {
     'user.modal.bindRolesPlease': '请绑定角色',
     'user.modal.man': '男',
     'user.modal.woman': '女',
+    'user.modal.description': '描述',
+    'user.modal.descriptionPlaceholder': '请输入描述',
   },
 };
 

@@ -9,7 +9,7 @@
 import { atom, selector } from 'recoil';
 
 export type User = {
-  user: { account: string; discription: string; id: number; nickname: string; password: string };
+  user: { account: string; description: string; id: number; nickname: string; password: string };
   token: string;
 };
 //
@@ -18,7 +18,7 @@ export const userAtom = atom<User>({
   default: {
     user: {
       account: '',
-      discription: '',
+      description: '',
       id: 1,
       nickname: '',
       password: '',

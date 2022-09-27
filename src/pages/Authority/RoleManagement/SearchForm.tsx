@@ -91,8 +91,8 @@ const SearchForm: React.FC<Props> = ({ setFormParams }) => {
           <Col span={colSpan}>
             <Form.Item label={t['searchForm.sex']} field="sex">
               <Select placeholder={t['searchForm.sex.placeholder']} allowClear>
-                <Option value="man">{t['user.modal.man']}</Option>
-                <Option value="woman">{t['user.modal.woman']}</Option>
+                <Option value="man">{t['role.modal.man']}</Option>
+                <Option value="woman">{t['role.modal.woman']}</Option>
               </Select>
             </Form.Item>
           </Col>

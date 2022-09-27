@@ -43,7 +43,7 @@ const CreateModal: React.FC<IProps> = () => {
 
   /*--memo--*/
   const title = useMemo(
-    () => (userId ? t['user.modal.editTitle'] : t['user.modal.createTitle']),
+    () => (userId ? t['role.modal.editTitle'] : t['role.modal.createTitle']),
     [t, userId]
   );
 
@@ -127,69 +127,69 @@ const CreateModal: React.FC<IProps> = () => {
     >
       <Form form={form} initialValues={initialValues}>
         <Form.Item
-          label={t['user.modal.nickname']}
+          label={t['role.modal.nickname']}
           field="nickname"
-          rules={[{ required: true, message: t['user.modal.nicknamePlaceholder'] }]}
+          rules={[{ required: true, message: t['role.modal.nicknamePlaceholder'] }]}
         >
-          <Input placeholder={t['user.modal.nicknamePlaceholder']} max={50} />
+          <Input placeholder={t['role.modal.nicknamePlaceholder']} max={50} />
         </Form.Item>
         <Form.Item
-          label={t['user.modal.account']}
+          label={t['role.modal.account']}
           field="account"
-          rules={[{ required: true, message: t['user.modal.accountPlaceholder'] }]}
+          rules={[{ required: true, message: t['role.modal.accountPlaceholder'] }]}
           disabled={!!userId}
         >
-          <Input placeholder={t['user.modal.accountPlaceholder']} max={50} />
+          <Input placeholder={t['role.modal.accountPlaceholder']} max={50} />
         </Form.Item>
         <Form.Item
-          label={t['user.modal.password']}
+          label={t['role.modal.password']}
           field="password"
-          rules={[{ required: true, message: t['user.modal.passwordPlaceholder'] }]}
+          rules={[{ required: true, message: t['role.modal.passwordPlaceholder'] }]}
         >
-          <Input placeholder={t['user.modal.passwordPlaceholder']} max={50} />
+          <Input placeholder={t['role.modal.passwordPlaceholder']} max={50} />
         </Form.Item>
         <Form.Item
-          label={t['user.modal.sex']}
+          label={t['role.modal.sex']}
           field="sex"
-          rules={[{ required: true, message: t['user.modal.sex'] }]}
+          rules={[{ required: true, message: t['role.modal.sex'] }]}
         >
           <Radio.Group
             options={[
               {
-                label: t['user.modal.man'],
+                label: t['role.modal.man'],
                 value: 'man',
               },
               {
-                label: t['user.modal.woman'],
+                label: t['role.modal.woman'],
                 value: 'woman',
               },
             ]}
           />
         </Form.Item>
         <Form.Item
-          label={t['user.modal.age']}
+          label={t['role.modal.age']}
           field="age"
-          rules={[{ required: true, message: t['user.modal.agePlaceholder'] }]}
+          rules={[{ required: true, message: t['role.modal.agePlaceholder'] }]}
         >
-          <InputNumber placeholder={t['user.modal.agePlaceholder']} max={99} min={18} />
+          <InputNumber placeholder={t['role.modal.agePlaceholder']} max={99} min={18} />
         </Form.Item>
-        <Form.Item label={t['user.modal.email']} field="email">
-          <Input placeholder={t['user.modal.emailPlaceholder']} />
+        <Form.Item label={t['role.modal.email']} field="email">
+          <Input placeholder={t['role.modal.emailPlaceholder']} />
         </Form.Item>
         <Form.Item
-          label={t['user.modal.phone']}
+          label={t['role.modal.phone']}
           field="phone"
-          rules={[{ required: true, message: t['user.modal.rightPhone'] }]}
+          rules={[{ required: true, message: t['role.modal.rightPhone'] }]}
         >
-          <InputNumber hideControl placeholder={t['user.modal.phonePlaceholder']} />
+          <InputNumber hideControl placeholder={t['role.modal.phonePlaceholder']} />
         </Form.Item>
         <Form.Item
-          label={t['user.modal.bindRoles']}
+          label={t['role.modal.bindRoles']}
           field="roles"
-          rules={[{ required: true, message: t['user.modal.bindRolesPlease'] }]}
+          rules={[{ required: true, message: t['role.modal.bindRolesPlease'] }]}
         >
           <Select
-            placeholder={t['user.modal.bindRolesPlease']}
+            placeholder={t['role.modal.bindRolesPlease']}
             mode="multiple"
             allowClear
             options={roleOptions}

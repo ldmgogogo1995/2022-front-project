@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-09-24 02:17:30
+ * @LastEditTime: 2022-09-28 01:21:35
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -35,6 +35,7 @@ import { useRecoilState } from 'recoil';
 import { userIdAtom, visibleAtom } from './model';
 import { dateFormat } from '@/utils/dateUtils';
 import { SorterResult } from '@arco-design/web-react/es/Table/interface';
+import { TABLE } from '@/constants/component';
 
 const { Text } = Typography;
 
@@ -45,16 +46,11 @@ const UserManagement: React.FC = () => {
   const columns: TableColumnProps[] = useMemo(
     () => [
       {
-        title: c['table.sequence'],
-        dataIndex: 'number',
-        render: (...arg) => arg.at(2) + 1,
-        width: 60,
-        fixed: 'left',
-      },
-      {
         title: t['user.nickname'],
         dataIndex: 'nickname',
         ellipsis: true,
+        width: 100,
+        fixed: 'left',
       },
       {
         title: t['user.account'],
@@ -97,6 +93,12 @@ const UserManagement: React.FC = () => {
           return renderUserStatus(status);
         },
       },
+      {
+        title: t['user.modal.description'],
+        dataIndex: 'description',
+        ellipsis: true,
+      },
+
       {
         title: c['table.actions'],
         dataIndex: 'actions',
@@ -298,7 +300,7 @@ const UserManagement: React.FC = () => {
           pagination={false}
           loading={loading}
           onChange={handleTableChange}
-          scroll={{ x: 1600 }}
+          scroll={{ x: TABLE.SCROLL_X }}
         />
       </div>
       <CustomPagination
