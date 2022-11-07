@@ -4,11 +4,11 @@
  * @Autor: ldm
  * @Date: 2022-07-31 19:25:19
  * @LastEditors: ldm
- * @LastEditTime: 2022-11-07 23:49:47
+ * @LastEditTime: 2022-11-07 23:51:23
  */
 
 import locale from '../locale';
-import { Form, Input, InputNumber, Message, Modal, Radio, Select } from '@arco-design/web-react';
+import { Form, Input, Message, Modal, Radio, Select } from '@arco-design/web-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
@@ -70,11 +70,6 @@ const CreateModal: React.FC<IProps> = () => {
     }
   }, [visible]);
 
-  //根据用户信息更新表单值
-  useEffect(() => {
-    const roleData = { ...userInfo, roles: (userInfo.roles ?? []).map((role) => role.id) };
-    form.setFieldsValue(roleData);
-  }, [userInfo]);
 
   /*--method--*/
   /**
