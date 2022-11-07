@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-03-20 00:55:21
  * @LastEditors: ldm
- * @LastEditTime: 2022-09-28 01:20:48
+ * @LastEditTime: 2022-11-07 23:49:14
  */
 const i18n = {
   'en-US': {},
@@ -15,8 +15,6 @@ const i18n = {
     'searchForm.status': '用户状态',
     'searchForm.use': '启用',
     'searchForm.forbidden': '停用',
-    'searchForm.isUse': '已启用',
-    'searchForm.isForbidden': '已停用',
     'searchForm.status.placeholder': '请选择用户状态',
     'searchForm.nickname': '用户名称',
     'searchForm.nickname.placeholder': '用户名称',

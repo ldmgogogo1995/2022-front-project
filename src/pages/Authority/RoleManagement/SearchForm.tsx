@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-04-01 00:04:41
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-05 19:00:21
+ * @LastEditTime: 2022-10-18 12:17:28
  */
 import { GlobalContext } from '@/context';
 import { useLocale } from '@/hooks';
@@ -13,10 +13,10 @@ import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
 import React, { useCallback, useContext } from 'react';
 import styles from './index.module.less';
 import locale from './locale';
-import { QueryUserListParams } from './server';
+import { QueryRoleListParams } from './server';
 import D from 'dayjs';
 type Props = {
-  setFormParams: React.Dispatch<React.SetStateAction<Partial<QueryUserListParams>>>;
+  setFormParams: React.Dispatch<React.SetStateAction<Partial<QueryRoleListParams>>>;
 };
 const { useForm } = Form;
 const { Row, Col } = Grid;
@@ -63,13 +63,13 @@ const SearchForm: React.FC<Props> = ({ setFormParams }) => {
       >
         <Row gutter={14}>
           <Col span={colSpan}>
-            <Form.Item label={t['searchForm.nickname']} field="nickname">
-              <Input placeholder={t['searchForm.nickname.placeholder']} allowClear />
+            <Form.Item label={t['searchForm.name']} field="name">
+              <Input placeholder={t['searchForm.name.placeholder']} allowClear />
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item label={t['searchForm.account']} field="account">
-              <Input allowClear placeholder={t['searchForm.account.placeholder']} />
+            <Form.Item label={t['searchForm.code']} field="code">
+              <Input allowClear placeholder={t['searchForm.code.placeholder']} />
             </Form.Item>
           </Col>
           <Col span={colSpan}>
@@ -86,14 +86,6 @@ const SearchForm: React.FC<Props> = ({ setFormParams }) => {
                 placeholder={t['searchForm.createDate.placeholder']}
                 allowClear
               />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item label={t['searchForm.sex']} field="sex">
-              <Select placeholder={t['searchForm.sex.placeholder']} allowClear>
-                <Option value="man">{t['role.modal.man']}</Option>
-                <Option value="woman">{t['role.modal.woman']}</Option>
-              </Select>
             </Form.Item>
           </Col>
         </Row>

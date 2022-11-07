@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-07-31 19:25:19
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-28 06:03:10
+ * @LastEditTime: 2022-11-07 23:49:47
  */
 
 import locale from '../locale';
@@ -13,15 +13,16 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   roleListQuery,
-  useRefreshUserInfo,
+  useRefreshRoleInfo,
   userIdAtom,
   userInfoQuery,
   visibleAtom,
 } from '../model';
 import { useLocale, useUpdateEffect } from '@/hooks';
-import { createUser, CreateUserParams, editUser, EditUserParams } from '../server';
+import { createRole, CreateRoleParams, editRole, EditRoleParams } from '../server';
 import { C } from '@/constants/common';
-const initialValues: Partial<CreateUserParams> = {
+import { INPUT } from '@/constants/component';
+const initialValues: Partial<CreateRoleParams> = {
   sex: 'man',
   age: 18,
 };
@@ -36,10 +37,10 @@ const CreateModal: React.FC<IProps> = () => {
 
   /*--recoil--*/
   const userId = useRecoilValue(userIdAtom); //用户id
-  const userInfo = useRecoilValue<Partial<EditUserParams>>(userInfoQuery(userId)); // 用户信息
+  const userInfo = useRecoilValue<Partial<EditRoleParams>>(userInfoQuery(userId)); // 用户信息
   const roleList = useRecoilValue(roleListQuery);
   const [visible, setVisible] = useRecoilState(visibleAtom);
-  const refreshUserInfo = useRefreshUserInfo(userId);
+  const refreshRoleInfo = useRefreshRoleInfo(userId);
 
   /*--memo--*/
   const title = useMemo(
@@ -63,7 +64,7 @@ const CreateModal: React.FC<IProps> = () => {
   // 刷新用户信息
   useEffect(() => {
     if (visible && userId) {
-      refreshUserInfo();
+      refreshRoleInfo();
     } else {
       form.resetFields();
     }
@@ -96,11 +97,11 @@ const CreateModal: React.FC<IProps> = () => {
         let res;
         setLoading(true);
         if (userId) {
-          res = await editUser({ ...values, id: userId }).finally(() => {
+          res = await editRole({ ...values, id: userId }).finally(() => {
             setLoading(false);
           });
         } else {
-          res = await createUser(values).finally(() => {
+          res = await createRole(values).finally(() => {
             setLoading(false);
           });
         }
@@ -127,72 +128,21 @@ const CreateModal: React.FC<IProps> = () => {
     >
       <Form form={form} initialValues={initialValues}>
         <Form.Item
-          label={t['role.modal.nickname']}
-          field="nickname"
-          rules={[{ required: true, message: t['role.modal.nicknamePlaceholder'] }]}
+          label={t['role.modal.name']}
+          field="name"
+          rules={[{ required: true, message: t['role.modal.namePlaceholder'] }]}
         >
-          <Input placeholder={t['role.modal.nicknamePlaceholder']} max={50} />
+          <Input placeholder={t['role.modal.namePlaceholder']} max={INPUT.MAX} allowClear />
         </Form.Item>
         <Form.Item
-          label={t['role.modal.account']}
-          field="account"
-          rules={[{ required: true, message: t['role.modal.accountPlaceholder'] }]}
-          disabled={!!userId}
+          label={t['role.modal.description']}
+          field="description"
+          rules={[{ required: true, message: t['role.modal.descriptionPlaceholder'] }]}
         >
-          <Input placeholder={t['role.modal.accountPlaceholder']} max={50} />
-        </Form.Item>
-        <Form.Item
-          label={t['role.modal.password']}
-          field="password"
-          rules={[{ required: true, message: t['role.modal.passwordPlaceholder'] }]}
-        >
-          <Input placeholder={t['role.modal.passwordPlaceholder']} max={50} />
-        </Form.Item>
-        <Form.Item
-          label={t['role.modal.sex']}
-          field="sex"
-          rules={[{ required: true, message: t['role.modal.sex'] }]}
-        >
-          <Radio.Group
-            options={[
-              {
-                label: t['role.modal.man'],
-                value: 'man',
-              },
-              {
-                label: t['role.modal.woman'],
-                value: 'woman',
-              },
-            ]}
-          />
-        </Form.Item>
-        <Form.Item
-          label={t['role.modal.age']}
-          field="age"
-          rules={[{ required: true, message: t['role.modal.agePlaceholder'] }]}
-        >
-          <InputNumber placeholder={t['role.modal.agePlaceholder']} max={99} min={18} />
-        </Form.Item>
-        <Form.Item label={t['role.modal.email']} field="email">
-          <Input placeholder={t['role.modal.emailPlaceholder']} />
-        </Form.Item>
-        <Form.Item
-          label={t['role.modal.phone']}
-          field="phone"
-          rules={[{ required: true, message: t['role.modal.rightPhone'] }]}
-        >
-          <InputNumber hideControl placeholder={t['role.modal.phonePlaceholder']} />
-        </Form.Item>
-        <Form.Item
-          label={t['role.modal.bindRoles']}
-          field="roles"
-          rules={[{ required: true, message: t['role.modal.bindRolesPlease'] }]}
-        >
-          <Select
-            placeholder={t['role.modal.bindRolesPlease']}
-            mode="multiple"
+          <Input.TextArea
+            placeholder={t['role.modal.descriptionPlaceholder']}
+            showWordLimit
             allowClear
-            options={roleOptions}
           />
         </Form.Item>
       </Form>

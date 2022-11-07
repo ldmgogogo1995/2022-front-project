@@ -4,29 +4,29 @@
  * @Autor: ldm
  * @Date: 2022-08-01 01:57:37
  * @LastEditors: ldm
- * @LastEditTime: 2022-08-28 06:05:06
+ * @LastEditTime: 2022-09-29 01:50:36
  */
 
 import { C } from '@/constants/common';
 import { Message } from '@arco-design/web-react';
 import { atom, atomFamily, selector, selectorFamily, useSetRecoilState } from 'recoil';
-import { fetchRoleList, fetchUserDetail } from '../server';
+import { fetchRoleList, fetchRoleDetail } from '../server';
 
 export const userIdAtom = atom<string>({
-  key: 'UserId',
+  key: 'RoleId',
   default: '',
 });
 
 export const visibleAtom = atom<boolean>({
-  key: 'UserCreateModalVisible',
+  key: 'RoleCreateModalVisible',
   default: false,
 });
 export const userInfoQueryRequestIDState = atomFamily({
-  key: 'UserInfoQueryRequestID',
+  key: 'RoleInfoQueryRequestID',
   default: '',
 });
 export const userInfoQuery = selectorFamily({
-  key: 'UserInfoQuery',
+  key: 'RoleInfoQuery',
   get:
     (userID: string) =>
     async ({ get }) => {
@@ -34,7 +34,7 @@ export const userInfoQuery = selectorFamily({
         const visible = get(visibleAtom);
         get(userInfoQueryRequestIDState(userID));
         if (!visible || !userID) return {};
-        const res = await fetchUserDetail(userID);
+        const res = await fetchRoleDetail(userID);
         if (res.code === C.SUCCESS_CODE) {
           return res.data;
         } else {
@@ -67,9 +67,9 @@ export const roleListQuery = selector({
  * @return {*}
  * @author: ldm
  */
-export function useRefreshUserInfo(userID: string) {
-  const setUserInfoQueryRequestID = useSetRecoilState(userInfoQueryRequestIDState(userID));
+export function useRefreshRoleInfo(userID: string) {
+  const setRoleInfoQueryRequestID = useSetRecoilState(userInfoQueryRequestIDState(userID));
   return () => {
-    setUserInfoQueryRequestID(userID);
+    setRoleInfoQueryRequestID(userID);
   };
 }

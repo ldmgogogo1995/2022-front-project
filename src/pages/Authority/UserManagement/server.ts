@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-07-26 22:14:33
  * @LastEditors: ldm
- * @LastEditTime: 2022-09-24 02:16:01
+ * @LastEditTime: 2022-09-29 01:46:43
  */
 import { FetchListParamsType } from '@/index';
 import request from '@/utils/request/http';
@@ -44,8 +44,8 @@ export interface EditUserParams extends CreateUserParams {
  * @author: ldm
  */
 
-export const fetchUserList = (params: Partial<QueryUserListParams>): Promise<any> =>
-  request.get('/user/list', { ...params });
+export const fetchUserPageList = (params: Partial<QueryUserListParams>): Promise<any> =>
+  request.get('/user/page', { ...params });
 
 /**
  * @description: 获取用户详情

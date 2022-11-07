@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-07-31 19:25:19
  * @LastEditors: ldm
- * @LastEditTime: 2022-09-28 01:30:41
+ * @LastEditTime: 2022-11-07 23:49:38
  */
 
 import locale from '../locale';
@@ -132,7 +132,7 @@ const CreateModal: React.FC<IProps> = () => {
           field="nickname"
           rules={[{ required: true, message: t['user.modal.nicknamePlaceholder'] }]}
         >
-          <Input placeholder={t['user.modal.nicknamePlaceholder']} max={50} />
+          <Input placeholder={t['user.modal.nicknamePlaceholder']} max={INPUT.MAX} />
         </Form.Item>
         <Form.Item
           label={t['user.modal.account']}
@@ -140,14 +140,14 @@ const CreateModal: React.FC<IProps> = () => {
           rules={[{ required: true, message: t['user.modal.accountPlaceholder'] }]}
           disabled={!!userId}
         >
-          <Input placeholder={t['user.modal.accountPlaceholder']} max={50} />
+          <Input placeholder={t['user.modal.accountPlaceholder']} max={INPUT.MAX} />
         </Form.Item>
         <Form.Item
           label={t['user.modal.password']}
           field="password"
           rules={[{ required: true, message: t['user.modal.passwordPlaceholder'] }]}
         >
-          <Input placeholder={t['user.modal.passwordPlaceholder']} max={50} />
+          <Input placeholder={t['user.modal.passwordPlaceholder']} max={INPUT.MAX} />
         </Form.Item>
         <Form.Item
           label={t['user.modal.sex']}

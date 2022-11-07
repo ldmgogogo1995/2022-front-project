@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-09-28 01:21:35
+ * @LastEditTime: 2022-10-24 23:39:16
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -25,7 +25,7 @@ import locale from './locale';
 import SearchForm from './SearchForm';
 import styles from './index.module.less';
 import { IconPlus } from '@arco-design/web-react/icon';
-import { deleteUser, fetchUserList, QueryUserListParams, updateStatus } from './server';
+import { deleteUser, fetchUserPageList, QueryUserListParams, updateStatus } from './server';
 import { C } from '@/constants/common';
 import CustomPagination from '@/components/CustomPagination';
 import usePageParams, { InitPageParmas } from '@/hooks/usePageParams';
@@ -36,6 +36,7 @@ import { userIdAtom, visibleAtom } from './model';
 import { dateFormat } from '@/utils/dateUtils';
 import { SorterResult } from '@arco-design/web-react/es/Table/interface';
 import { TABLE } from '@/constants/component';
+import StatusTag from '@/components/StatusTag';
 
 const { Text } = Typography;
 
@@ -90,7 +91,7 @@ const UserManagement: React.FC = () => {
         title: t['user.status'],
         dataIndex: 'status',
         render: (status) => {
-          return renderUserStatus(status);
+          return <StatusTag status={status} />;
         },
       },
       {
@@ -154,19 +155,6 @@ const UserManagement: React.FC = () => {
   /*---method---*/
 
   /**
-   * @description:渲染用户状态
-   * @return {*}
-   * @author: ldm
-   */
-  const renderUserStatus = useCallback((status) => {
-    switch (status) {
-      case 1:
-        return <Tag color="#00b42a">{t['searchForm.isUse']}</Tag>;
-      default:
-        return <Tag color="#f53f3f">{t['searchForm.isForbidden']}</Tag>;
-    }
-  }, []);
-  /**
    * @description:获取用户列表
    * @return {*}
    * @author: ldm
@@ -180,7 +168,7 @@ const UserManagement: React.FC = () => {
           ...formParams,
           ...sorter,
         };
-        const res = await fetchUserList(params).finally(() => setLoading(false));
+        const res = await fetchUserPageList(params).finally(() => setLoading(false));
         if (res.code === C.SUCCESS_CODE) {
           setData(res.data ?? []);
           setTotal(res.total ?? 0);

@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-09-28 01:00:48
+ * @LastEditTime: 2022-10-24 23:38:41
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -17,7 +17,6 @@ import {
   Divider,
   Spin,
   Popconfirm,
-  Tag,
   Typography,
 } from '@arco-design/web-react';
 import React, { Suspense, useCallback, useMemo, useState } from 'react';
@@ -25,7 +24,7 @@ import locale from './locale';
 import SearchForm from './SearchForm';
 import styles from './index.module.less';
 import { IconPlus } from '@arco-design/web-react/icon';
-import { deleteUser, fetchUserList, QueryUserListParams } from './server';
+import { deleteRole, fetchRolePageList, QueryRoleListParams } from './server';
 import { C } from '@/constants/common';
 import CustomPagination from '@/components/CustomPagination';
 import usePageParams, { InitPageParmas } from '@/hooks/usePageParams';
@@ -35,24 +34,25 @@ import { useRecoilState } from 'recoil';
 import { userIdAtom, visibleAtom } from './model';
 import { dateFormat } from '@/utils/dateUtils';
 import { SorterResult } from '@arco-design/web-react/es/Table/interface';
+import StatusTag from '@/components/StatusTag';
 
 const { Text } = Typography;
 
-const UserManagement: React.FC = () => {
+const RoleManagement: React.FC = () => {
   const t = useLocale(locale);
   const c = useLocale();
 
   const columns: TableColumnProps[] = useMemo(
     () => [
       {
-        title: t['role.nickname'],
-        dataIndex: 'nickname',
+        title: t['role.name'],
+        dataIndex: 'name',
         ellipsis: true,
         render: (text) => <Text copyable>{text}</Text>,
       },
       {
-        title: t['role.account'],
-        dataIndex: 'account',
+        title: t['role.code'],
+        dataIndex: 'code',
         ellipsis: true,
       },
       {
@@ -68,25 +68,11 @@ const UserManagement: React.FC = () => {
         render: (text) => dateFormat(text),
       },
       {
-        title: t['role.roles'],
-        dataIndex: 'roles',
-        ellipsis: true,
-        render: (roles) => {
-          return (
-            <>
-              {(roles ?? []).map((role) => (
-                <Tag bordered key={role.id}>
-                  {role.name}
-                </Tag>
-              ))}
-            </>
-          );
-        },
-      },
-      {
         title: t['role.status'],
         dataIndex: 'status',
-        // render: ,
+        render: (status) => {
+          return <StatusTag status={status} />;
+        },
       },
       {
         title: c['table.actions'],
@@ -116,11 +102,11 @@ const UserManagement: React.FC = () => {
 
   /*---recoil---*/
   const [visible, setVisible] = useRecoilState<boolean>(visibleAtom);
-  const [_, setUserId] = useRecoilState<string>(userIdAtom);
+  const [_, setRoleId] = useRecoilState<string>(userIdAtom);
   /*---state---*/
   const [data, setData] = useState([]); // 用户数据
   const [loading, setLoading] = useState<boolean>(false); // loading状态
-  const [formParams, setFormParams] = useState<Partial<QueryUserListParams>>({});
+  const [formParams, setFormParams] = useState<Partial<QueryRoleListParams>>({});
   const [total, setTotal] = useState<number>(0);
   const [sorter, setSorter] = useState<SorterResult>({});
 
@@ -129,18 +115,22 @@ const UserManagement: React.FC = () => {
     //关闭弹窗时刷新列表页并且重置用户id
     if (!visible) {
       doSearch(pageParams);
-      setUserId('');
+      setRoleId('');
     }
   }, [visible]);
 
   /*---method---*/
-
+  /**
+   * @description:
+   * @return {*}
+   * @author: ldm
+   */
   /**
    * @description:获取用户列表
    * @return {*}
    * @author: ldm
    */
-  const getUserList = useCallback(
+  const getRoleList = useCallback(
     async (pageParams) => {
       setLoading(true);
       try {
@@ -149,7 +139,7 @@ const UserManagement: React.FC = () => {
           ...formParams,
           ...sorter,
         };
-        const res = await fetchUserList(params).finally(() => setLoading(false));
+        const res = await fetchRolePageList(params).finally(() => setLoading(false));
         if (res.code === C.SUCCESS_CODE) {
           setData(res.data ?? []);
           setTotal(res.total ?? 0);
@@ -170,7 +160,7 @@ const UserManagement: React.FC = () => {
    */
   const doSearch = useCallback(
     (pageParams: InitPageParmas) => {
-      getUserList(pageParams);
+      getRoleList(pageParams);
     },
     [formParams, sorter]
   );
@@ -180,7 +170,7 @@ const UserManagement: React.FC = () => {
    * @return {*}
    * @author: ldm
    */
-  const handleCreateUser = useCallback(() => {
+  const handleCreateRole = useCallback(() => {
     setVisible(true);
   }, []);
   /*--customHook--*/
@@ -196,7 +186,7 @@ const UserManagement: React.FC = () => {
   const handelDelete = useCallback(
     async (id) => {
       try {
-        const res = await deleteUser([id]);
+        const res = await deleteRole([id]);
         if (res.code === C.SUCCESS_CODE) {
           Message.success(c['actions.success']);
           doSearch(pageParams);
@@ -214,7 +204,7 @@ const UserManagement: React.FC = () => {
    * @author: ldm
    */
   const handleEdit = useCallback((record) => {
-    setUserId(record.id);
+    setRoleId(record.id);
     setVisible(true);
   }, []);
 
@@ -234,7 +224,7 @@ const UserManagement: React.FC = () => {
       <SearchForm setFormParams={setFormParams} />
       <div className={styles['button-group']}>
         <Space>
-          <Button type="primary" onClick={handleCreateUser} icon={<IconPlus />}>
+          <Button type="primary" onClick={handleCreateRole} icon={<IconPlus />}>
             {t['action.button.create']}
           </Button>
         </Space>
@@ -269,4 +259,4 @@ const UserManagement: React.FC = () => {
     </Card>
   );
 };
-export default UserManagement;
+export default RoleManagement;
