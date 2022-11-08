@@ -4,12 +4,12 @@ import { IconGithub } from '@arco-design/web-react/icon'
  * @Author: ldm
  * @Date: 2021-11-22 16:04:57
  * @LastEditors: ldm
- * @LastEditTime: 2021-11-30 01:20:52
+ * @LastEditTime: 2022-11-09 00:45:14
  * @Description: 公共底部
  */
 
 import { Layout, Menu, Breadcrumb, Button, Message } from '@arco-design/web-react';
-import DefaultFooter from "@/components/DefualtFooter";
+import DefaultFooter from "@/components/base/DefualtFooter";
 const { Footer } = Layout
 const GlobalFooter: React.FC = () => {
     return <Footer>

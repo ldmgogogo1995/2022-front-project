@@ -2,12 +2,12 @@
  * @Author: ldm
  * @Date: 2021-11-13 17:14:18
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-20 00:58:41
+ * @LastEditTime: 2022-11-09 00:45:21
  * @Description: 项目入口
  */
 import React, { useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
-import Layout from '@/components/Layout';
+import Layout from '@/components/base/Layout';
 import { Button, Spin, ConfigProvider } from '@arco-design/web-react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './pages/Login';
