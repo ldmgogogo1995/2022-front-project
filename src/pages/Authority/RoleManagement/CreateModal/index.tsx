@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-07-31 19:25:19
  * @LastEditors: ldm
- * @LastEditTime: 2022-11-07 23:51:23
+ * @LastEditTime: 2022-11-09 00:29:58
  */
 
 import locale from '../locale';
@@ -69,7 +69,6 @@ const CreateModal: React.FC<IProps> = () => {
       form.resetFields();
     }
   }, [visible]);
-
 
   /*--method--*/
   /**

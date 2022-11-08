@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-10-24 23:38:41
+ * @LastEditTime: 2022-11-09 00:40:29
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -26,15 +26,15 @@ import styles from './index.module.less';
 import { IconPlus } from '@arco-design/web-react/icon';
 import { deleteRole, fetchRolePageList, QueryRoleListParams } from './server';
 import { C } from '@/constants/common';
-import CustomPagination from '@/components/CustomPagination';
+import CustomPagination from '@/components/base/CustomPagination';
 import usePageParams, { InitPageParmas } from '@/hooks/usePageParams';
-import CustomButton from '@/components/CustomButton';
+import CustomButton from '@/components/base/CustomButton';
 import CreateModal from './CreateModal';
 import { useRecoilState } from 'recoil';
 import { userIdAtom, visibleAtom } from './model';
 import { dateFormat } from '@/utils/dateUtils';
 import { SorterResult } from '@arco-design/web-react/es/Table/interface';
-import StatusTag from '@/components/StatusTag';
+import StatusTag from '@/components/base/StatusTag';
 
 const { Text } = Typography;
 
