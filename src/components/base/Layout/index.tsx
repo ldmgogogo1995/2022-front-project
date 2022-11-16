@@ -2,7 +2,7 @@
  * @Author: ldm
  * @Date: 2021-11-20 03:22:49
  * @LastEditors: ldm
- * @LastEditTime: 2022-07-20 00:48:04
+ * @LastEditTime: 2022-11-09 00:53:07
  * @Description: 布局组件
  */
 
@@ -146,7 +146,7 @@ const BaseLayoutPage: React.FC = () => {
     function travel(_routes) {
       _routes.forEach((route) => {
         if (route.key && !route.children) {
-          route.component = lazyload(() => import(`../../pages/${route.key}`));
+          route.component = lazyload(() => import(`../../../pages/${route.key}`));
           res.push(route);
         } else if (isArray(route.children) && route.children.length) {
           travel(route.children);

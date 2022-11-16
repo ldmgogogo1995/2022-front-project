@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-08-01 01:57:37
  * @LastEditors: ldm
- * @LastEditTime: 2022-09-29 01:50:36
+ * @LastEditTime: 2022-11-17 00:01:02
  */
 
 import { C } from '@/constants/common';
@@ -12,7 +12,7 @@ import { Message } from '@arco-design/web-react';
 import { atom, atomFamily, selector, selectorFamily, useSetRecoilState } from 'recoil';
 import { fetchRoleList, fetchRoleDetail } from '../server';
 
-export const userIdAtom = atom<string>({
+export const roleIdAtom = atom<string>({
   key: 'RoleId',
   default: '',
 });
@@ -21,20 +21,20 @@ export const visibleAtom = atom<boolean>({
   key: 'RoleCreateModalVisible',
   default: false,
 });
-export const userInfoQueryRequestIDState = atomFamily({
+export const roleInfoQueryRequestIDState = atomFamily({
   key: 'RoleInfoQueryRequestID',
   default: '',
 });
-export const userInfoQuery = selectorFamily({
+export const roleInfoQuery = selectorFamily({
   key: 'RoleInfoQuery',
   get:
-    (userID: string) =>
+    (roleID: string) =>
     async ({ get }) => {
       try {
         const visible = get(visibleAtom);
-        get(userInfoQueryRequestIDState(userID));
-        if (!visible || !userID) return {};
-        const res = await fetchRoleDetail(userID);
+        get(roleInfoQueryRequestIDState(roleID));
+        if (!visible || !roleID) return {};
+        const res = await fetchRoleDetail(roleID);
         if (res.code === C.SUCCESS_CODE) {
           return res.data;
         } else {
@@ -62,14 +62,15 @@ export const roleListQuery = selector({
     } catch (error) {}
   },
 });
+
 /**
- * @description:刷新用户信息
+ * @description:刷新角色信息
  * @return {*}
  * @author: ldm
  */
-export function useRefreshRoleInfo(userID: string) {
-  const setRoleInfoQueryRequestID = useSetRecoilState(userInfoQueryRequestIDState(userID));
+export function useRefreshRoleInfo(roleID: string): any {
+  const setRoleInfoQueryRequestID = useSetRecoilState(roleInfoQueryRequestIDState(roleID));
   return () => {
-    setRoleInfoQueryRequestID(userID);
+    setRoleInfoQueryRequestID(roleID);
   };
 }

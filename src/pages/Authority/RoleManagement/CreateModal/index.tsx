@@ -4,28 +4,18 @@
  * @Autor: ldm
  * @Date: 2022-07-31 19:25:19
  * @LastEditors: ldm
- * @LastEditTime: 2022-11-09 00:29:58
+ * @LastEditTime: 2022-11-16 23:55:41
  */
 
 import locale from '../locale';
 import { Form, Input, Message, Modal, Radio, Select } from '@arco-design/web-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import {
-  roleListQuery,
-  useRefreshRoleInfo,
-  userIdAtom,
-  userInfoQuery,
-  visibleAtom,
-} from '../model';
+import { useRefreshRoleInfo, roleIdAtom, roleInfoQuery, visibleAtom } from '../model';
 import { useLocale, useUpdateEffect } from '@/hooks';
 import { createRole, CreateRoleParams, editRole, EditRoleParams } from '../server';
 import { C } from '@/constants/common';
 import { INPUT } from '@/constants/component';
-const initialValues: Partial<CreateRoleParams> = {
-  sex: 'man',
-  age: 18,
-};
 
 const { useForm } = Form;
 interface IProps {}
@@ -36,26 +26,17 @@ const CreateModal: React.FC<IProps> = () => {
   const c = useLocale();
 
   /*--recoil--*/
-  const userId = useRecoilValue(userIdAtom); //用户id
-  const userInfo = useRecoilValue<Partial<EditRoleParams>>(userInfoQuery(userId)); // 用户信息
-  const roleList = useRecoilValue(roleListQuery);
+  const roleId = useRecoilValue(roleIdAtom); //用户id
+  const roleInfo = useRecoilValue<Partial<EditRoleParams>>(roleInfoQuery(roleId)); // 用户信息
   const [visible, setVisible] = useRecoilState(visibleAtom);
-  const refreshRoleInfo = useRefreshRoleInfo(userId);
+  const refreshRoleInfo = useRefreshRoleInfo(roleId);
 
   /*--memo--*/
   const title = useMemo(
-    () => (userId ? t['role.modal.editTitle'] : t['role.modal.createTitle']),
-    [t, userId]
+    () => (roleId ? t['role.modal.editTitle'] : t['role.modal.createTitle']),
+    [t, roleId]
   );
 
-  const roleOptions = useMemo(
-    () =>
-      (roleList ?? []).map((role) => ({
-        label: role.name,
-        value: role.id,
-      })),
-    [roleList]
-  );
   /*--state--*/
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -63,12 +44,18 @@ const CreateModal: React.FC<IProps> = () => {
   /*--effect--*/
   // 刷新用户信息
   useEffect(() => {
-    if (visible && userId) {
+    if (visible && roleId) {
       refreshRoleInfo();
     } else {
       form.resetFields();
     }
   }, [visible]);
+
+  //根据角色信息更新表单值
+  useEffect(() => {
+    const roleData = { ...roleInfo };
+    form.setFieldsValue(roleData);
+  }, [roleInfo]);
 
   /*--method--*/
   /**
@@ -80,6 +67,7 @@ const CreateModal: React.FC<IProps> = () => {
   const handleCancel = useCallback(() => {
     setVisible(false);
   }, []);
+  
   /**
    * @description: 提交表单
    * @return {*}
@@ -90,8 +78,8 @@ const CreateModal: React.FC<IProps> = () => {
       try {
         let res;
         setLoading(true);
-        if (userId) {
-          res = await editRole({ ...values, id: userId }).finally(() => {
+        if (roleId) {
+          res = await editRole({ ...values, id: roleId }).finally(() => {
             setLoading(false);
           });
         } else {
@@ -109,7 +97,7 @@ const CreateModal: React.FC<IProps> = () => {
         console.error(error);
       }
     });
-  }, [userId]);
+  }, [roleId]);
   return (
     <Modal
       onCancel={handleCancel}
@@ -120,7 +108,7 @@ const CreateModal: React.FC<IProps> = () => {
       unmountOnExit
       mountOnEnter={false}
     >
-      <Form form={form} initialValues={initialValues}>
+      <Form form={form}>
         <Form.Item
           label={t['role.modal.name']}
           field="name"
@@ -128,15 +116,12 @@ const CreateModal: React.FC<IProps> = () => {
         >
           <Input placeholder={t['role.modal.namePlaceholder']} max={INPUT.MAX} allowClear />
         </Form.Item>
-        <Form.Item
-          label={t['role.modal.description']}
-          field="description"
-          rules={[{ required: true, message: t['role.modal.descriptionPlaceholder'] }]}
-        >
+        <Form.Item label={t['role.modal.description']} field="description">
           <Input.TextArea
             placeholder={t['role.modal.descriptionPlaceholder']}
             showWordLimit
             allowClear
+            maxLength={INPUT.TEXTAREA.MAXLENGTH}
           />
         </Form.Item>
       </Form>

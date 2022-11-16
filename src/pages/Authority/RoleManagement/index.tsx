@@ -4,7 +4,7 @@
  * @Autor: ldm
  * @Date: 2022-02-09 01:23:10
  * @LastEditors: ldm
- * @LastEditTime: 2022-11-09 00:40:29
+ * @LastEditTime: 2022-11-16 23:33:57
  */
 import { useLocale, useUpdateEffect } from '@/hooks';
 import {
@@ -31,7 +31,7 @@ import usePageParams, { InitPageParmas } from '@/hooks/usePageParams';
 import CustomButton from '@/components/base/CustomButton';
 import CreateModal from './CreateModal';
 import { useRecoilState } from 'recoil';
-import { userIdAtom, visibleAtom } from './model';
+import { roleIdAtom, visibleAtom } from './model';
 import { dateFormat } from '@/utils/dateUtils';
 import { SorterResult } from '@arco-design/web-react/es/Table/interface';
 import StatusTag from '@/components/base/StatusTag';
@@ -102,7 +102,7 @@ const RoleManagement: React.FC = () => {
 
   /*---recoil---*/
   const [visible, setVisible] = useRecoilState<boolean>(visibleAtom);
-  const [_, setRoleId] = useRecoilState<string>(userIdAtom);
+  const [_, setRoleId] = useRecoilState<string>(roleIdAtom);
   /*---state---*/
   const [data, setData] = useState([]); // 用户数据
   const [loading, setLoading] = useState<boolean>(false); // loading状态
